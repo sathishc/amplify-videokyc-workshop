@@ -38,12 +38,11 @@ If we were to try and build scalable and highly-available systems to handle each
 
 * [Amazon DynamoDB](https://aws.amazon.com/dynamodb/), to provide millisecond response times to API queries for album and photo data
 
-* [AWS AppSync](https://aws.amazon.com/appsync/), to host a GraphQL API for our front end
+* [AWS API Gateway](https://aws.amazon.com/api-gateway/), to host the REST API for our front end
 
-* [AWS Lambda](https://aws.amazon.com/lambda/), to create photo thumbnails asynchronously in the cloud
+* [AWS Lambda](https://aws.amazon.com/lambda/), to send information to backend services
 
-* [Amazon Rekognition](https://aws.amazon.com/rekognition/), to detect relevant labels for uploaded photos
+* [Amazon Rekognition](https://aws.amazon.com/rekognition/), to detect relevant information from liveness checks and documents uploaded
 
-* [Amazon Elasticsearch Service](https://aws.amazon.com/elasticsearch-service/), to index and search our photos by their labels
 
 If any or all of these services are new to you, don't worry. We'll cover everything you need to know to get started using everything mentioned above. And there's no better way to learn than to build, so let's get started!
