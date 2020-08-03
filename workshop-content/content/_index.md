@@ -1,11 +1,11 @@
 ---
-title: "Amplify Web App Workshop"
+title: "Amplify Video KYC Workshop"
 chapter: true
 weight: 1
 ---
 
-## Build a Photo-Sharing Web App <br/> with AWS Amplify and AWS AppSync
+## Build a Self-service Video KYC App <br/> with AWS Amplify and AWS AI Services
 
 ### Welcome!
 
-In this workshop, we'll use React to build a data-driven web app that lets users upload photos to secure photo galleries. We'll use AWS AppSync to get up and running quickly with a GraphQL API that backs our data in Amazon DynamoDB. In addition, we'll demonstrate how to use the AWS Amplify library to authenticate users, communicate with our API, and manage photo uploads. Finally, we add in AI-powered object tagging using Amazon Rekognition, allowing users to discover photos without any manual data entry.
+In this workshop, we'll use React to build a data-driven web app that lets users perform self-service Video KYC (Know your customer). The app does a liveness check by asking the user to perform random actions and validates these actions using Amazon Rekognition. It then asks the user to upload certain identifty documents and uses Amazon Textract to parse the contents to the document to gather information such as name, date of birth, etc. The app also compared snapshots of the user face and compares the same with the photo identification provided.

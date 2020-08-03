@@ -9,15 +9,14 @@ In this workshop, we'll build an app with quite a few features, including:
 
 * Allowing user sign up and authentication, so we know who owns which photo albums
 
-* Building an API server, so our front end has a way to load the appropriate albums and photos to show a given user
+* Building an API server, so our front end has a way to send liveliness information, picture snapshots and identity document information to the backend services
 
-* Storing data about albums, photos, and permissions of who can view what, so that our API has a fast and reliable place to query and save data to
+* Send Liveness infromation (position of face, smile, etc) to aan Amazon Rekognition backend and check to see if the App is interacting with a live user
 
-* Storing and serving photos, so we have a place to put all of the photos that users are uploading to albums
+* Extract face information during Liveness check to compare with photo identification
 
-* Automatically creating photo thumbnails, so we don't need to deliver full-resolution photos when users browse a photo album's list of photos
+* Upload identity documents to private storage and extract information from the same for each user. Extract face image fron photo id to compare with live snapshot
 
-* Automatically detecting relevant labels for each uploaded photo and making photos searchable based on these labels
 
 ### The Architecture
 
