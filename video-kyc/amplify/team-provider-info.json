@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-videokyc-dev-210943-authRole",
+            "UnauthRoleArn": "arn:aws:iam::495964055302:role/amplify-videokyc-dev-210943-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::495964055302:role/amplify-videokyc-dev-210943-authRole",
+            "Region": "ap-south-1",
+            "DeploymentBucketName": "amplify-videokyc-dev-210943-deployment",
+            "UnauthRoleName": "amplify-videokyc-dev-210943-unauthRole",
+            "StackName": "amplify-videokyc-dev-210943",
+            "StackId": "arn:aws:cloudformation:ap-south-1:495964055302:stack/amplify-videokyc-dev-210943/bb2fb430-d668-11ea-b017-06e4827d8e82",
+            "AmplifyAppId": "d2cpowtod66oom"
+        }
+    }
+}
