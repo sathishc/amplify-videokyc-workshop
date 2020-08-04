@@ -4,7 +4,7 @@ chapter = true
 weight = 40
 +++
 
-# Adding Liveliness Checks with Amazon Recognition
+# Adding Liveliness Checks with Amazon Rekognition
 
 {{% children showhidden="false" %}}
 
