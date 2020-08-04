@@ -17,11 +17,11 @@ Here's what the sign-in screen will look like:
 
 **➡️ On the command line, in the photoalbums directory**:
 
-1. **Be sure to be in photoalbums directory** `cd photoalbums`
+1. **Be sure to be in photoalbums directory** `cd video-kyc`
 
 1. **Run** `amplify init`
 
-1. **Press _Enter_** to accept the default project name 'photoalbums'
+1. **Press _Enter_** to accept the default project name 'video-kyc'
 
 1. **Enter 'master'** for the environment name
 
