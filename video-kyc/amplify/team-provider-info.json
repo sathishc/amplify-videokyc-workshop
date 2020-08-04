@@ -10,6 +10,11 @@
             "StackName": "amplify-videokyc-dev-210943",
             "StackId": "arn:aws:cloudformation:ap-south-1:495964055302:stack/amplify-videokyc-dev-210943/bb2fb430-d668-11ea-b017-06e4827d8e82",
             "AmplifyAppId": "d2cpowtod66oom"
+        },
+        "categories": {
+            "auth": {
+                "videokyce56a7d42": {}
+            }
         }
     }
 }
