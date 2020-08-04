@@ -26,7 +26,7 @@ Before we start writing our UI, we'll also include React Bootstrap UI components
 
 **➡️ In the video-kyc directory, run** `npm install --save react-bootstrap`
 
-**➡️ Replace `public/index.html` with** ___CLIPBOARD_BUTTON 0ce4b3e780ae9cbb429b4d2a6ac625a057a5fed5:video-kyc/public/index.html|
+**➡️ Replace `public/index.html` with** ___CLIPBOARD_BUTTON 0ce4b3e780ae9cbb429b4d2a6ac625a057a5fed5:photoalbums/public/index.html|
 
 ### Starting the App
 Now let's start our development server so we can make changes and see them refreshed live in the browser.
@@ -49,7 +49,7 @@ Finally, **open another terminal window**. We'll leave this first terminal alone
 
 Next, we'll want to start with a clean slate.
 
-**➡️ Replace `src/App.js` with** ___CLIPBOARD_BUTTON 6c0bff7c33c87c1117890501a772279cf876fb41:video-kyc/src/App.js|
+**➡️ Replace `src/App.js` with** ___CLIPBOARD_BUTTON 6c0bff7c33c87c1117890501a772279cf876fb41:photoalbums/src/App.js|
 
 {{% notice note %}}
 At this point, the browser should automatically refresh and show a much simpler page, with just some text that says 'Hello World'. It's not much to look at yet, but it's good to start with as little markup as possible.

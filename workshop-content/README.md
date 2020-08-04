@@ -1,19 +1,7 @@
-# Attention
 
-This workshop content is over a year old and AWS Amplify has made a great deal of improvements 
-since this content was originally written. 
 
-Instead of this content, please check out some of the more up-to-date Amplify content. One great 
-example is the <a href="https://github.com/aws-samples/aws-serverless-airline-booking">AWS Serverless Airline Booking</a> project. 
-Besides that, you can find lots more excellent AWS Amplify content on the <a href="https://amplify.aws/community/">AWS Amplify Community</a> site.
-
-If you would still like to review the content of this workshop, these instructions should still work, 
-provided you use the specific version of AWS Amplify noted in the Prerequisites section.
-
-------------
-
-# Amplify Photo Gallery Workshop
-AWS Workshop tutorial for building a photo gallery web app using AWS Amplify and AWS AppSync.
+# Amplify Video KYC Workshop
+AWS Workshop tutorial for building a self service Video KYC App using AWS Amplify, Amazon Rekognition and Comprehend
 
 ## Building the workshop static site with Hugo
 

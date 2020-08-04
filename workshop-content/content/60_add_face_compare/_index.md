@@ -1,10 +1,10 @@
 +++
-title = "Managing Photos"
+title = "Comparing Faces"
 chapter = true
 weight = 60
 +++
 
-# Managing Photos
+# Compare Faces using Amazon Rekognition
 
 {{% children showhidden="false" %}}
 

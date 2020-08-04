@@ -1,10 +1,10 @@
 +++
-title = "Working With Albums"
+title = "Document Checks"
 chapter = true
 weight = 50
 +++
 
-# Working With Albums
+# Add Document Checks wit AWS Comprehend
 
 {{% children showhidden="false" %}}
 

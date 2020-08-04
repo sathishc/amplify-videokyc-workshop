@@ -22,7 +22,7 @@ In this workshop, we'll build an app with quite a few features, including:
 
 Here's a map of the services we'll use and how they'll all connect.
 
-![Serverless Photo Albums Architecture](/images/architecture.png)
+![Video KYC Architecture](/images/architecture.png)
 
 ### Our Tools
 
