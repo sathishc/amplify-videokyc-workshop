@@ -1,5 +1,5 @@
 +++
-title = "Rendering the Front End"
+title = "Add Auth to Front End"
 chapter = false
 weight = 20
 +++
