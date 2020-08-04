@@ -23,7 +23,7 @@ The AWS Amplify CLI makes it easy to deploy our app to a publicly accessible buc
 
     ? hosting bucket name 
 
-    Accept the propossed one that looks like photoalbums-19700101010203--hostingbucket
+    Accept the propossed one that looks like video-kyc-19700101010203--hostingbucket
 
 
     ? index doc for the website 
