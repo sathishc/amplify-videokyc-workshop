@@ -12,7 +12,7 @@ We haven't yet added the *aws-amplify* and *aws-amplify-react* modules to our ap
 
 **➡️ Run** `npm install --save aws-amplify @aws-amplify/ui-react`
 
-**➡️ Replace `src/App.js` with** ___CLIPBOARD_BUTTON daa4069beb70d721535869f7078c9ad1c27b03c0:photoalbums/src/App.js|
+**➡️ Replace `src/App.js` with** ___CLIPBOARD_BUTTON 83f54c0769f7d11fbbb29e43cf451a8cd4257b04:video-kyc/src/App.js|
 
 Take a look at the web app now and you should have a sign-up / sign-in form!
 

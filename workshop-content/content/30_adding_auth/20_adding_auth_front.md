@@ -12,72 +12,61 @@ We haven't yet added the *aws-amplify* and *aws-amplify-react* modules to our ap
 
 **➡️ Run** `npm install --save aws-amplify @aws-amplify/ui-react`
 
-**➡️ Replace `src/App.js` with** <span class="clipBtn clipboard" data-clipboard-target="#iddaa4069beb70d721535869f7078c9ad1c27b03c0photoalbumssrcAppjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
+**➡️ Replace `src/App.js` with** <span class="clipBtn clipboard" data-clipboard-target="#id83f54c0769f7d11fbbb29e43cf451a8cd4257b04videokycsrcAppjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
 {{< expand "Click to view diff" >}} {{< safehtml >}}
-<div id="diff-iddaa4069beb70d721535869f7078c9ad1c27b03c0photoalbumssrcAppjs"></div> <script type="text/template" data-diff-for="diff-iddaa4069beb70d721535869f7078c9ad1c27b03c0photoalbumssrcAppjs">commit daa4069beb70d721535869f7078c9ad1c27b03c0
-Author: Gabe Hollombe <gabehol@amazon.com>
-Date:   Tue Feb 11 13:53:51 2020 +0800
+<div id="diff-id83f54c0769f7d11fbbb29e43cf451a8cd4257b04videokycsrcAppjs"></div> <script type="text/template" data-diff-for="diff-id83f54c0769f7d11fbbb29e43cf451a8cd4257b04videokycsrcAppjs">commit 83f54c0769f7d11fbbb29e43cf451a8cd4257b04
+Author: Sathish <sat.hariharan@gmail.com>
+Date:   Tue Aug 4 21:40:22 2020 +0530
 
-    integrate auth to frontend
+    add authentication
 
-diff --git a/photoalbums/src/App.js b/photoalbums/src/App.js
-index 4b68c37..8cbceb0 100644
---- a/photoalbums/src/App.js
-+++ b/photoalbums/src/App.js
-@@ -1,13 +1,24 @@
+diff --git a/video-kyc/src/App.js b/video-kyc/src/App.js
+index 2ca7f84..94ca89e 100644
+--- a/video-kyc/src/App.js
++++ b/video-kyc/src/App.js
+@@ -1,7 +1,12 @@
  import React from 'react';
+-import logo from './logo.svg';
++import { withAuthenticator} from '@aws-amplify/ui-react';
++
+ import './App.css';
  
 +import Amplify from 'aws-amplify';
-+import aws_exports from './aws-exports';
-+
-+import { withAuthenticator } from 'aws-amplify-react';
- import { Header } from 'semantic-ui-react';
- 
-+Amplify.configure(aws_exports);
++import awsconfig from './aws-exports';
++Amplify.configure(awsconfig);
 +
  function App() {
    return (
-     <Header as="h1">
-       Hello World!
-     </Header>
--  )
-+  );
+     <div className="App">
+@@ -12,4 +17,4 @@ function App() {
+   );
  }
  
--export default App
-+export default withAuthenticator(App, {
-+  includeGreetings: true,
-+  signUpConfig: {
-+    hiddenDefaults: ['phone_number']
-+  }
-+});
+-export default App;
++export default withAuthenticator(App);
 </script>
 {{< /safehtml >}} {{< /expand >}}
 {{< safehtml >}}
-<textarea id="iddaa4069beb70d721535869f7078c9ad1c27b03c0photoalbumssrcAppjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React from 'react';
+<textarea id="id83f54c0769f7d11fbbb29e43cf451a8cd4257b04videokycsrcAppjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React from 'react';
+import { withAuthenticator} from '@aws-amplify/ui-react';
+
+import './App.css';
 
 import Amplify from 'aws-amplify';
-import aws_exports from './aws-exports';
-
-import { withAuthenticator } from 'aws-amplify-react';
-import { Header } from 'semantic-ui-react';
-
-Amplify.configure(aws_exports);
+import awsconfig from './aws-exports';
+Amplify.configure(awsconfig);
 
 function App() {
   return (
-    <Header as="h1">
-      Hello World!
-    </Header>
+    <div className="App">
+      <header className="App-header">
+        Hello World !
+      </header>
+    </div>
   );
 }
 
-export default withAuthenticator(App, {
-  includeGreetings: true,
-  signUpConfig: {
-    hiddenDefaults: ['phone_number']
-  }
-});
+export default withAuthenticator(App);
 
 </textarea>
 {{< /safehtml >}}
