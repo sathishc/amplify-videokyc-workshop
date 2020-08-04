@@ -24,7 +24,7 @@ You can learn more about create-react-app at [https://github.com/facebook/create
 
 Before we start writing our UI, we'll also include React Bootstrap UI components for React to give us components that will help make our interface look a bit nicer.
 
-**➡️ In the video-kyc directory, run** `npm install --save react-bootstrap`
+**➡️ In the video-kyc directory, run** `npm install --save react-bootstrap bootstrap`
 
 **➡️ Replace `public/index.html` with** <span class="clipBtn clipboard" data-clipboard-target="#id0ce4b3e780ae9cbb429b4d2a6ac625a057a5fed5photoalbumspublicindexhtml"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
 {{< expand "Click to view diff" >}} {{< safehtml >}}
