@@ -7,15 +7,15 @@ weight = 10
 ### Our Goal
 In this workshop, we'll build an app with quite a few features, including:
 
-* Allowing user sign up and authentication, so we know who owns which photo albums
+* Allowing user sign up and authentication, so we know who is performing the self-service KYC and any data provided remains safe
 
-* Building an API server, so our front end has a way to send liveliness information, picture snapshots and identity document information to the backend services
+* Add a Liveliness check to make sure the user performing the KYC steps is a real person and not a photgraph, etc. This done by invoking Rekognition APIs via a REST API and a backend Lambda Function. Extract face information during Liveness check to compare with photo identification
 
-* Send Liveness infromation (position of face, smile, etc) to aan Amazon Rekognition backend and check to see if the App is interacting with a live user
+* Add a photo identification upload feature to gather a photo id document. Extract text and photo information from ths document to compare with information gathered during the livliness check. Upload information to private S3 storage. Implement a REST API and a backend Lambda function to extract entity information using AWS Comprehend
 
-* Extract face information during Liveness check to compare with photo identification
+* Compare face information using Amazon Rekognition. Implement a REST API and Lambda Function to use Amazon Rekognition to compare facial information captured during the LIveliness check and from photo identification
 
-* Upload identity documents to private storage and extract information from the same for each user. Extract face image fron photo id to compare with live snapshot
+* Implememt a way for different types of photo ids to be uploaded and automatically recognize the type of id.
 
 
 ### The Architecture
