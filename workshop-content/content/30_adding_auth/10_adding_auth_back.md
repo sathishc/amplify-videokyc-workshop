@@ -15,9 +15,9 @@ Here's what the sign-in screen will look like:
 
 ### Initializing Amplify
 
-**➡️ On the command line, in the photoalbums directory**:
+**➡️ On the command line, in the viideo-kyc directory**:
 
-1. **Be sure to be in photoalbums directory** `cd video-kyc`
+1. **Be sure to be in video-kyc directory** `cd video-kyc`
 
 1. **Run** `amplify init`
 
