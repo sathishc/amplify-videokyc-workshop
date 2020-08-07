@@ -12,10 +12,12 @@ In the Cloud9 terminal, **run the following commands** to install and update som
 
 ```bash
 # Update the AWS CLI
-pip install --user --upgrade awscli
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
 
 # Install the AWS Amplify CLI
-npm install -g @aws-amplify/cli@4.13.2
+npm install -g @aws-amplify/cli
 
 # Install jq
 sudo yum install jq -y
