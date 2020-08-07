@@ -25,9 +25,9 @@ sudo yum install jq -y
 # Install Python3
 
 sudo yum install libssl-dev openssl
-wget https://www.python.org/ftp/python/3.8.1/Python-3.8.5.tgz
-tar xzvf Python-3.8.5.tgz
-cd Python-3.8.5
+wget https://www.python.org/ftp/python/3.6.11/Python-3.6.11.tgz
+tar xzvf Python-3.6.11.tgz
+cd Python-3.6.11
 ./configure
 make
 sudo make install
