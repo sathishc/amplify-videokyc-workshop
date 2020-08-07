@@ -1,0 +1,10 @@
+{
+  "permissions": {},
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "kyclayer",
+      "version": 1
+    }
+  ]
+}

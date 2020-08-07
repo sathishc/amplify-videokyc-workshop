@@ -1,0 +1,19 @@
+{
+  "runtimes": [
+    {
+      "value": "python",
+      "name": "Python",
+      "layerExecutablePath": "python/lib/python3.8/site-packages",
+      "cloudTemplateValue": "python3.8"
+    }
+  ],
+  "layerVersionMap": {
+    "1": {
+      "permissions": [
+        {
+          "type": "private"
+        }
+      ]
+    }
+  }
+}
