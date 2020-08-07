@@ -6,5 +6,11 @@
 			"dependsOn": [],
 			"customAuth": false
 		}
+	},
+	"storage": {
+		"kycstore": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		}
 	}
 }
