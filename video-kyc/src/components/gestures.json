@@ -1,0 +1,14 @@
+[
+    {
+        "name":"smile",
+        "description":"Please smile !!!"
+    },
+    {
+        "name":"eyesClose",
+        "description":"Please close your eyes"
+    },
+    {
+        "name":"mouthOpen",
+        "description":"Please open your mouth :)"
+    }
+]
