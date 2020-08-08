@@ -10,6 +10,7 @@ import Tab from 'react-bootstrap/Tab'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Button from 'react-bootstrap/Button'
 
+import Liveliness from './Liveliness'
 
 export default () => {
 
@@ -25,6 +26,10 @@ export default () => {
     setCurrentTabKey(eventkey);
   }
 
+  const setTabStatus = (value) => {
+    console.log("current tab value ", value);
+    setCurrentTabKey(value);
+  }
   
   
   return (
@@ -62,7 +67,7 @@ export default () => {
         </Tab>
         <Tab eventKey="Liveliness" title="Liveliness Test">
             <div>
-                Liveliness Check !
+                <Liveliness setTabStatus={setTabStatus}/>
             </div>
         </Tab>
         <Tab eventKey="UploadDocs" title="Upload Documents">
