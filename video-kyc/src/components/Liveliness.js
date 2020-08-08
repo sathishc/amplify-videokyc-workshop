@@ -8,9 +8,10 @@ import _ from 'lodash'
 
 import Amplify, { Auth, Storage, Logger } from 'aws-amplify'
 import AWS from 'aws-sdk'
+import awsConfig from "../aws-exports"
 
 const logger = new Logger('kyc','INFO');
-AWS.config.update({region:'ap-south-1'});
+AWS.config.update({region:awsConfig.aws_cognito_region});
 
 
 const videoConstraints = {
@@ -38,6 +39,10 @@ const videoConstraints = {
         Auth.currentCredentials().then(function(creds){
             logger.info(creds)
             AWS.config.update(creds);   
+        })
+
+        Auth.currentSession().then(function(userInfo){
+            logger.info("Session", userInfo) 
         })
       
     },[])
