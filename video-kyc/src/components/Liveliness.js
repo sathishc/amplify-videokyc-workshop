@@ -6,7 +6,7 @@ import Card from "react-bootstrap/Card"
 import ProgressBar from "react-bootstrap/ProgressBar"
 import _ from 'lodash'
 
-import Amplify, { Auth, Storage, Logger } from 'aws-amplify'
+import { Auth, Storage, Logger } from 'aws-amplify'
 import AWS from 'aws-sdk'
 import awsConfig from "../aws-exports"
 
