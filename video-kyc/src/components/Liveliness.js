@@ -20,11 +20,6 @@ const videoConstraints = {
     facingMode: "user"
   };
 
-
-
-
-
-
   export default ({setTabStatus,faceDetails,updateFaceDetails}) => {
     const [gesture, setGesture] = useState(null);
     const [showSpinner,setShowSpinner] = useState(false);
@@ -34,16 +29,13 @@ const videoConstraints = {
     const [progressValue, setProgressValue] = useState(5);
 
     useEffect(() => {
-    
         Storage.configure({ level: 'private' });
         Auth.currentCredentials().then(function(creds){
-            logger.info(creds)
             AWS.config.update(creds);   
         })
     },[])
 
     useEffect(() => {
-            
       if(gesture !== null)  {
         const description = getGestureDescription(gesture)  
         setAlertMessage(description + ". Click button to continue =>  ")
@@ -57,7 +49,6 @@ const videoConstraints = {
         }).description
     }
     
-
     const proceedToNext = () => {
       setTabStatus("UploadDocs");
     }
@@ -65,7 +56,6 @@ const videoConstraints = {
     const updateGestureState = () => {
         
         // update current gesture state to true
-
         // update next gesture
         if( gesture === "smile") {
             setProgressValue(30)
