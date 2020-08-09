@@ -40,11 +40,6 @@ const videoConstraints = {
             logger.info(creds)
             AWS.config.update(creds);   
         })
-
-        Auth.currentSession().then(function(userInfo){
-            logger.info("Session", userInfo) 
-        })
-      
     },[])
 
     useEffect(() => {
