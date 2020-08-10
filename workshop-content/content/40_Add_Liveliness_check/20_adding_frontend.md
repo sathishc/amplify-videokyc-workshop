@@ -59,53 +59,186 @@ index 0000000..e7198c3
 </textarea>
 {{< /safehtml >}}
 
-4. **➡️ Create a new component `src/components/Liveliness.js` with** <span class="clipBtn clipboard" data-clipboard-target="#id4c0f1429b726d606b881798016e30f83df04d0e9videokycsrccomponentsLivelinessjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
+4. **➡️ Create a new component `src/components/Liveliness.js` with** <span class="clipBtn clipboard" data-clipboard-target="#id1aab29be0c79aba0649fa6428507589920f1c943videokycsrccomponentsLivelinessjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
 {{< expand "Click to view diff" >}} {{< safehtml >}}
-<div id="diff-id4c0f1429b726d606b881798016e30f83df04d0e9videokycsrccomponentsLivelinessjs"></div> <script type="text/template" data-diff-for="diff-id4c0f1429b726d606b881798016e30f83df04d0e9videokycsrccomponentsLivelinessjs">commit 4c0f1429b726d606b881798016e30f83df04d0e9
+<div id="diff-id1aab29be0c79aba0649fa6428507589920f1c943videokycsrccomponentsLivelinessjs"></div> <script type="text/template" data-diff-for="diff-id1aab29be0c79aba0649fa6428507589920f1c943videokycsrccomponentsLivelinessjs">commit 1aab29be0c79aba0649fa6428507589920f1c943
 Author: Sathish <sat.hariharan@gmail.com>
-Date:   Sun Aug 9 00:19:28 2020 +0530
+Date:   Mon Aug 10 17:58:34 2020 +0530
 
-    update Liveliness to avoid harcode
+    add Liveliness component
 
 diff --git a/video-kyc/src/components/Liveliness.js b/video-kyc/src/components/Liveliness.js
-index dc4a843..b323736 100644
+index 9b2a3ed..3ce67d3 100644
 --- a/video-kyc/src/components/Liveliness.js
 +++ b/video-kyc/src/components/Liveliness.js
-@@ -8,9 +8,10 @@ import _ from 'lodash'
+@@ -5,6 +5,7 @@ import gest_data from './gestures.json'
+ import Card from "react-bootstrap/Card"
+ import ProgressBar from "react-bootstrap/ProgressBar"
+ import _ from 'lodash'
++import Jimp from 'jimp'
  
- import Amplify, { Auth, Storage, Logger } from 'aws-amplify'
+ import { Auth, Storage, Logger } from 'aws-amplify'
  import AWS from 'aws-sdk'
-+import awsConfig from "../aws-exports"
+@@ -20,7 +21,7 @@ const videoConstraints = {
+     facingMode: "user"
+   };
  
- const logger = new Logger('kyc','INFO');
--AWS.config.update({region:'ap-south-1'});
-+AWS.config.update({region:awsConfig.aws_cognito_region});
+-  export default ({setTabStatus,faceDetails,updateFaceDetails}) => {
++  export default ({setTabStatus, setLiveTestDetails}) => {
+     const [gesture, setGesture] = useState(null);
+     const [showSpinner,setShowSpinner] = useState(false);
+     const [alertMessage, setAlertMessage] = useState("You will be asked to do a series of random gestures which will enable us to detect a live feed.  ");
+@@ -28,6 +29,11 @@ const videoConstraints = {
+     const [showWebcam, setShowWebcam] = useState(false);
+     const [progressValue, setProgressValue] = useState(5);
  
- 
- const videoConstraints = {
-@@ -39,6 +40,10 @@ const videoConstraints = {
-             logger.info(creds)
-             AWS.config.update(creds);   
-         })
++    // identification state from liveness test
++    const [liveGender, setLiveGender] = useState("");
++    const [ageRange, setAgeRange] = useState("");    
++    const [liveImage, setLiveImage] = useState(null);
 +
-+        Auth.currentSession().then(function(userInfo){
-+            logger.info("Session", userInfo) 
-+        })
-       
-     },[])
+     useEffect(() => {
+         Storage.configure({ level: 'private' });
+         Auth.currentCredentials().then(function(creds){
+@@ -50,6 +56,11 @@ const videoConstraints = {
+     }
+     
+     const proceedToNext = () => {
++        setLiveTestDetails({
++           liveGender:liveGender,
++           ageRange:ageRange,
++           liveImage:liveImage 
++        })  
+       setTabStatus("UploadDocs");
+     }
  
+@@ -108,57 +119,76 @@ const videoConstraints = {
+     }
+ 
+ 
+-    const requestGesture = () => {
++    const requestGesture = async () => {
+       
+       
+         setShowSpinner(true);
+       
+         const imageBase64String = webcamRef.current.getScreenshot({width: 800, height: 450}); 
+         const base64Image = imageBase64String.split(';base64,').pop();  
+-        const binaryImg = new Buffer(base64Image, 'base64');    
++        const imageBuffer = new Buffer(base64Image, 'base64');    
+ 
+         let rekognition = new AWS.Rekognition();
+         let params = {
+         Attributes: [ "ALL" ],
+             Image: {
+-                Bytes:binaryImg
++                Bytes:imageBuffer
+             }
+         };
+-        console.log("Calling rekognition")
+-        rekognition.detectFaces(params, function(err, data) {
+-            if (err) 
+-                console.log(err, err.stack); // an error occurred
+-            else { 
+-               let validationResult = validateGesture(gesture, data) 
+-               if(validationResult.result){
+-                    if(gesture === 'smile'){
+-                        Storage.put('gesture1.jpeg', binaryImg)
+-                            .then (result => {
+-                                console.log(result)
+-                                setAlertMessage(validationResult.message)
+-                                setShowSpinner(false);
+-                                updateGestureState();
+-                            }) 
+-                            .catch(err => {
+-                                console.log(err)
+-                                setAlertMessage("Error processing smile")
+-                                setShowSpinner(false);
+-                                setGesture("smile")
+-                            });
+-                    } else {
+-                        // update gesture state
+-                        setAlertMessage(validationResult.message)
+-                        setShowSpinner(false);
+-                        updateGestureState();
+-                    }
+-               } else {
+-                 // unable to validate gesture - set Error Message
+-                 setAlertMessage(validationResult.message)
+-                 setShowSpinner(false);
+-               }     
++        
++        let faceDetectResponse = await rekognition.detectFaces(params).promise()
++
++        if (faceDetectResponse.$response.error) {
++            setShowSpinner(false);
++            setAlertMessage(faceDetectResponse.$response.error.message)
++            return new Promise((resolve, reject) => {
++                throw new Error(faceDetectResponse.$response.error.message);
++            }) 
++        }
++        else { 
++            let validationResult = validateGesture(gesture, faceDetectResponse) 
++            if(validationResult.result){
++                if(gesture === 'smile'){
++
++                    // set the gender
++                    setLiveGender(faceDetectResponse.FaceDetails[0].Gender.Value)
++                    setAgeRange(faceDetectResponse.FaceDetails[0].AgeRange.Value)
++
++                    // get the bounding box
++                    let imageBounds = faceDetectResponse.FaceDetails[0].BoundingBox
++                    logger.info(imageBounds)
++                    // crop the face and store the image
++                    Jimp.read(imageBuffer, (err, image) => {
++                        if (err) throw err;
++                        else {
++                        
++                        image.crop(image.bitmap.width*imageBounds.Left - 15, image.bitmap.height*imageBounds.Top - 15, image.bitmap.width*imageBounds.Width + 30, image.bitmap.height*imageBounds.Height + 30)
++                            .getBuffer(Jimp.MIME_JPEG, function (err, docImage) {
++                            
++                                Storage.put('liveImage.jpeg', docImage)
++                            }).getBase64(Jimp.MIME_JPEG, function (err, base64Image) {
++                                setLiveImage(base64Image)
++                            })
++                        }
++                    })
++
++                    // update gesture state
++                    setAlertMessage(validationResult.message)
++                    setShowSpinner(false);
++                    updateGestureState();    
++                } else {
++                    // update gesture state
++                    setAlertMessage(validationResult.message)
++                    setShowSpinner(false);
++                    updateGestureState();
++                }
++            } else {
++                // unable to validate gesture - set Error Message
++                setAlertMessage(validationResult.message)
++                setShowSpinner(false);
+             }     
+-        })
+-    };
++        }     
++    }
+ 
+     function start_test(evt){
+       setShowProgress(true);
 </script>
 {{< /safehtml >}} {{< /expand >}}
 {{< safehtml >}}
-<textarea id="id4c0f1429b726d606b881798016e30f83df04d0e9videokycsrccomponentsLivelinessjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React,{ useState, useEffect } from "react";
+<textarea id="id1aab29be0c79aba0649fa6428507589920f1c943videokycsrccomponentsLivelinessjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React,{ useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import Button from 'react-bootstrap/Button'
 import gest_data from './gestures.json'
 import Card from "react-bootstrap/Card"
 import ProgressBar from "react-bootstrap/ProgressBar"
 import _ from 'lodash'
+import Jimp from 'jimp'
 
-import Amplify, { Auth, Storage, Logger } from 'aws-amplify'
+import { Auth, Storage, Logger } from 'aws-amplify'
 import AWS from 'aws-sdk'
 import awsConfig from "../aws-exports"
 
@@ -119,12 +252,7 @@ const videoConstraints = {
     facingMode: "user"
   };
 
-
-
-
-
-
-  export default ({setTabStatus,faceDetails,updateFaceDetails}) => {
+  export default ({setTabStatus, setLiveTestDetails}) => {
     const [gesture, setGesture] = useState(null);
     const [showSpinner,setShowSpinner] = useState(false);
     const [alertMessage, setAlertMessage] = useState("You will be asked to do a series of random gestures which will enable us to detect a live feed.  ");
@@ -132,22 +260,19 @@ const videoConstraints = {
     const [showWebcam, setShowWebcam] = useState(false);
     const [progressValue, setProgressValue] = useState(5);
 
+    // identification state from liveness test
+    const [liveGender, setLiveGender] = useState("");
+    const [ageRange, setAgeRange] = useState("");    
+    const [liveImage, setLiveImage] = useState(null);
+
     useEffect(() => {
-    
         Storage.configure({ level: 'private' });
         Auth.currentCredentials().then(function(creds){
-            logger.info(creds)
             AWS.config.update(creds);   
         })
-
-        Auth.currentSession().then(function(userInfo){
-            logger.info("Session", userInfo) 
-        })
-      
     },[])
 
     useEffect(() => {
-            
       if(gesture !== null)  {
         const description = getGestureDescription(gesture)  
         setAlertMessage(description + ". Click button to continue =>  ")
@@ -161,15 +286,18 @@ const videoConstraints = {
         }).description
     }
     
-
     const proceedToNext = () => {
+        setLiveTestDetails({
+           liveGender:liveGender,
+           ageRange:ageRange,
+           liveImage:liveImage 
+        })  
       setTabStatus("UploadDocs");
     }
 
     const updateGestureState = () => {
         
         // update current gesture state to true
-
         // update next gesture
         if( gesture === "smile") {
             setProgressValue(30)
@@ -222,57 +350,76 @@ const videoConstraints = {
     }
 
 
-    const requestGesture = () => {
+    const requestGesture = async () => {
       
       
         setShowSpinner(true);
       
         const imageBase64String = webcamRef.current.getScreenshot({width: 800, height: 450}); 
         const base64Image = imageBase64String.split(';base64,').pop();  
-        const binaryImg = new Buffer(base64Image, 'base64');    
+        const imageBuffer = new Buffer(base64Image, 'base64');    
 
         let rekognition = new AWS.Rekognition();
         let params = {
         Attributes: [ "ALL" ],
             Image: {
-                Bytes:binaryImg
+                Bytes:imageBuffer
             }
         };
-        console.log("Calling rekognition")
-        rekognition.detectFaces(params, function(err, data) {
-            if (err) 
-                console.log(err, err.stack); // an error occurred
-            else { 
-               let validationResult = validateGesture(gesture, data) 
-               if(validationResult.result){
-                    if(gesture === 'smile'){
-                        Storage.put('gesture1.jpeg', binaryImg)
-                            .then (result => {
-                                console.log(result)
-                                setAlertMessage(validationResult.message)
-                                setShowSpinner(false);
-                                updateGestureState();
-                            }) 
-                            .catch(err => {
-                                console.log(err)
-                                setAlertMessage("Error processing smile")
-                                setShowSpinner(false);
-                                setGesture("smile")
-                            });
-                    } else {
-                        // update gesture state
-                        setAlertMessage(validationResult.message)
-                        setShowSpinner(false);
-                        updateGestureState();
-                    }
-               } else {
-                 // unable to validate gesture - set Error Message
-                 setAlertMessage(validationResult.message)
-                 setShowSpinner(false);
-               }     
+        
+        let faceDetectResponse = await rekognition.detectFaces(params).promise()
+
+        if (faceDetectResponse.$response.error) {
+            setShowSpinner(false);
+            setAlertMessage(faceDetectResponse.$response.error.message)
+            return new Promise((resolve, reject) => {
+                throw new Error(faceDetectResponse.$response.error.message);
+            }) 
+        }
+        else { 
+            let validationResult = validateGesture(gesture, faceDetectResponse) 
+            if(validationResult.result){
+                if(gesture === 'smile'){
+
+                    // set the gender
+                    setLiveGender(faceDetectResponse.FaceDetails[0].Gender.Value)
+                    setAgeRange(faceDetectResponse.FaceDetails[0].AgeRange.Value)
+
+                    // get the bounding box
+                    let imageBounds = faceDetectResponse.FaceDetails[0].BoundingBox
+                    logger.info(imageBounds)
+                    // crop the face and store the image
+                    Jimp.read(imageBuffer, (err, image) => {
+                        if (err) throw err;
+                        else {
+                        
+                        image.crop(image.bitmap.width*imageBounds.Left - 15, image.bitmap.height*imageBounds.Top - 15, image.bitmap.width*imageBounds.Width + 30, image.bitmap.height*imageBounds.Height + 30)
+                            .getBuffer(Jimp.MIME_JPEG, function (err, docImage) {
+                            
+                                Storage.put('liveImage.jpeg', docImage)
+                            }).getBase64(Jimp.MIME_JPEG, function (err, base64Image) {
+                                setLiveImage(base64Image)
+                            })
+                        }
+                    })
+
+                    // update gesture state
+                    setAlertMessage(validationResult.message)
+                    setShowSpinner(false);
+                    updateGestureState();    
+                } else {
+                    // update gesture state
+                    setAlertMessage(validationResult.message)
+                    setShowSpinner(false);
+                    updateGestureState();
+                }
+            } else {
+                // unable to validate gesture - set Error Message
+                setAlertMessage(validationResult.message)
+                setShowSpinner(false);
             }     
-        })
-    };
+        }     
+    }
 
     function start_test(evt){
       setShowProgress(true);
@@ -321,50 +468,63 @@ const videoConstraints = {
 </textarea>
 {{< /safehtml >}}
 
-5. **➡️ Update the KYCContainer component `src/components/KYCContainer.js` with** <span class="clipBtn clipboard" data-clipboard-target="#id72a13d06429c875c0b1454a5554259a5cb669e27videokycsrccomponentsKYCContainerjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
+5. **➡️ Update the KYCContainer component `src/components/KYCContainer.js` with** <span class="clipBtn clipboard" data-clipboard-target="#ida6ce5f326220de2a9c2f24db73b7ef71e82536d0videokycsrccomponentsKYCContainerjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
 {{< expand "Click to view diff" >}} {{< safehtml >}}
-<div id="diff-id72a13d06429c875c0b1454a5554259a5cb669e27videokycsrccomponentsKYCContainerjs"></div> <script type="text/template" data-diff-for="diff-id72a13d06429c875c0b1454a5554259a5cb669e27videokycsrccomponentsKYCContainerjs">commit 72a13d06429c875c0b1454a5554259a5cb669e27
+<div id="diff-ida6ce5f326220de2a9c2f24db73b7ef71e82536d0videokycsrccomponentsKYCContainerjs"></div> <script type="text/template" data-diff-for="diff-ida6ce5f326220de2a9c2f24db73b7ef71e82536d0videokycsrccomponentsKYCContainerjs">commit a6ce5f326220de2a9c2f24db73b7ef71e82536d0
 Author: Sathish <sat.hariharan@gmail.com>
-Date:   Sun Aug 9 00:00:51 2020 +0530
+Date:   Mon Aug 10 17:59:02 2020 +0530
 
-    Update KYC Container
+    Add Liveliness to KYC Container
 
 diff --git a/video-kyc/src/components/KYCContainer.js b/video-kyc/src/components/KYCContainer.js
-index 48c9ba0..c0d0f5d 100644
+index c0d0f5d..c1dbef3 100644
 --- a/video-kyc/src/components/KYCContainer.js
 +++ b/video-kyc/src/components/KYCContainer.js
-@@ -10,6 +10,7 @@ import Tab from 'react-bootstrap/Tab'
- import Jumbotron from 'react-bootstrap/Jumbotron'
- import Button from 'react-bootstrap/Button'
+@@ -12,9 +12,13 @@ import Button from 'react-bootstrap/Button'
  
-+import Liveliness from './Liveliness'
+ import Liveliness from './Liveliness'
  
++
  export default () => {
  
-@@ -25,6 +26,10 @@ export default () => {
-     setCurrentTabKey(eventkey);
-   }
- 
-+  const setTabStatus = (value) => {
-+    console.log("current tab value ", value);
-+    setCurrentTabKey(value);
-+  }
+   const [currentTabKey, setCurrentTabKey] = useState("welcome");
++
++  const [liveTestDetails, setLiveTestDetails] = useState({});
++  const [documentDetails, setDocumentDetails] = useState({});
    
-   
-   return (
-@@ -62,7 +67,7 @@ export default () => {
+   const startKyc = () => {
+     setCurrentTabKey("Liveliness");
+@@ -65,18 +69,20 @@ export default () => {
+                 </p>
+             </Jumbotron>
          </Tab>
-         <Tab eventKey="Liveliness" title="Liveliness Test">
+-        <Tab eventKey="Liveliness" title="Liveliness Test">
++        <Tab eventKey="Liveliness" title="Liveliness Test" disabled>
              <div>
--                Liveliness Check !
-+                <Liveliness setTabStatus={setTabStatus}/>
+-                <Liveliness setTabStatus={setTabStatus}/>
++                <Liveliness setTabStatus={setTabStatus} setLiveTestDetails={setLiveTestDetails} />
              </div>
          </Tab>
-         <Tab eventKey="UploadDocs" title="Upload Documents">
+-        <Tab eventKey="UploadDocs" title="Upload Documents">
++        <Tab eventKey="UploadDocs" title="Upload Documents" disabled>
+             <div>
+-            Upload Documents
++            
++            
++            
+             </div>
+         </Tab>
+-        <Tab eventKey="AnalysisDetails" title="Details of Analysis">
+-            Summary Details
++        <Tab eventKey="AnalysisDetails" title="Details of Analysis" disabled>
++          
+         </Tab>
+         </Tabs>
+     </Col>
 </script>
 {{< /safehtml >}} {{< /expand >}}
 {{< safehtml >}}
-<textarea id="id72a13d06429c875c0b1454a5554259a5cb669e27videokycsrccomponentsKYCContainerjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React, { useState } from 'react'
+<textarea id="ida6ce5f326220de2a9c2f24db73b7ef71e82536d0videokycsrccomponentsKYCContainerjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React, { useState } from 'react'
 
 import { AmplifySignOut } from '@aws-amplify/ui-react'
 import Navbar from 'react-bootstrap/Navbar'
@@ -378,9 +538,13 @@ import Button from 'react-bootstrap/Button'
 
 import Liveliness from './Liveliness'
 
+
 export default () => {
 
   const [currentTabKey, setCurrentTabKey] = useState("welcome");
+
+  const [liveTestDetails, setLiveTestDetails] = useState({});
+  const [documentDetails, setDocumentDetails] = useState({});
   
   const startKyc = () => {
     setCurrentTabKey("Liveliness");
@@ -431,18 +595,20 @@ export default () => {
                 </p>
             </Jumbotron>
         </Tab>
-        <Tab eventKey="Liveliness" title="Liveliness Test">
+        <Tab eventKey="Liveliness" title="Liveliness Test" disabled>
             <div>
-                <Liveliness setTabStatus={setTabStatus}/>
+                <Liveliness setTabStatus={setTabStatus} setLiveTestDetails={setLiveTestDetails} />
             </div>
         </Tab>
-        <Tab eventKey="UploadDocs" title="Upload Documents">
+        <Tab eventKey="UploadDocs" title="Upload Documents" disabled>
             <div>
-            Upload Documents
+            
+            
+            
             </div>
         </Tab>
-        <Tab eventKey="AnalysisDetails" title="Details of Analysis">
-            Summary Details
+        <Tab eventKey="AnalysisDetails" title="Details of Analysis" disabled>
+          
         </Tab>
         </Tabs>
     </Col>
