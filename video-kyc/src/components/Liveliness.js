@@ -5,6 +5,7 @@ import gest_data from './gestures.json'
 import Card from "react-bootstrap/Card"
 import ProgressBar from "react-bootstrap/ProgressBar"
 import _ from 'lodash'
+import Jimp from 'jimp'
 
 import { Auth, Storage, Logger } from 'aws-amplify'
 import AWS from 'aws-sdk'
@@ -20,13 +21,18 @@ const videoConstraints = {
     facingMode: "user"
   };
 
-  export default ({setTabStatus,faceDetails,updateFaceDetails}) => {
+  export default ({setTabStatus, setLiveTestDetails}) => {
     const [gesture, setGesture] = useState(null);
     const [showSpinner,setShowSpinner] = useState(false);
     const [alertMessage, setAlertMessage] = useState("You will be asked to do a series of random gestures which will enable us to detect a live feed.  ");
     const [showProgress, setShowProgress] = useState(false);
     const [showWebcam, setShowWebcam] = useState(false);
     const [progressValue, setProgressValue] = useState(5);
+
+    // identification state from liveness test
+    const [liveGender, setLiveGender] = useState("");
+    const [ageRange, setAgeRange] = useState("");    
+    const [liveImage, setLiveImage] = useState(null);
 
     useEffect(() => {
         Storage.configure({ level: 'private' });
@@ -50,6 +56,11 @@ const videoConstraints = {
     }
     
     const proceedToNext = () => {
+        setLiveTestDetails({
+           liveGender:liveGender,
+           ageRange:ageRange,
+           liveImage:liveImage 
+        })  
       setTabStatus("UploadDocs");
     }
 
@@ -108,57 +119,76 @@ const videoConstraints = {
     }
 
 
-    const requestGesture = () => {
+    const requestGesture = async () => {
       
       
         setShowSpinner(true);
       
         const imageBase64String = webcamRef.current.getScreenshot({width: 800, height: 450}); 
         const base64Image = imageBase64String.split(';base64,').pop();  
-        const binaryImg = new Buffer(base64Image, 'base64');    
+        const imageBuffer = new Buffer(base64Image, 'base64');    
 
         let rekognition = new AWS.Rekognition();
         let params = {
         Attributes: [ "ALL" ],
             Image: {
-                Bytes:binaryImg
+                Bytes:imageBuffer
             }
         };
-        console.log("Calling rekognition")
-        rekognition.detectFaces(params, function(err, data) {
-            if (err) 
-                console.log(err, err.stack); // an error occurred
-            else { 
-               let validationResult = validateGesture(gesture, data) 
-               if(validationResult.result){
-                    if(gesture === 'smile'){
-                        Storage.put('gesture1.jpeg', binaryImg)
-                            .then (result => {
-                                console.log(result)
-                                setAlertMessage(validationResult.message)
-                                setShowSpinner(false);
-                                updateGestureState();
-                            }) 
-                            .catch(err => {
-                                console.log(err)
-                                setAlertMessage("Error processing smile")
-                                setShowSpinner(false);
-                                setGesture("smile")
-                            });
-                    } else {
-                        // update gesture state
-                        setAlertMessage(validationResult.message)
-                        setShowSpinner(false);
-                        updateGestureState();
-                    }
-               } else {
-                 // unable to validate gesture - set Error Message
-                 setAlertMessage(validationResult.message)
-                 setShowSpinner(false);
-               }     
+        
+        let faceDetectResponse = await rekognition.detectFaces(params).promise()
+
+        if (faceDetectResponse.$response.error) {
+            setShowSpinner(false);
+            setAlertMessage(faceDetectResponse.$response.error.message)
+            return new Promise((resolve, reject) => {
+                throw new Error(faceDetectResponse.$response.error.message);
+            }) 
+        }
+        else { 
+            let validationResult = validateGesture(gesture, faceDetectResponse) 
+            if(validationResult.result){
+                if(gesture === 'smile'){
+
+                    // set the gender
+                    setLiveGender(faceDetectResponse.FaceDetails[0].Gender.Value)
+                    setAgeRange(faceDetectResponse.FaceDetails[0].AgeRange.Value)
+
+                    // get the bounding box
+                    let imageBounds = faceDetectResponse.FaceDetails[0].BoundingBox
+                    logger.info(imageBounds)
+                    // crop the face and store the image
+                    Jimp.read(imageBuffer, (err, image) => {
+                        if (err) throw err;
+                        else {
+                        
+                        image.crop(image.bitmap.width*imageBounds.Left - 15, image.bitmap.height*imageBounds.Top - 15, image.bitmap.width*imageBounds.Width + 30, image.bitmap.height*imageBounds.Height + 30)
+                            .getBuffer(Jimp.MIME_JPEG, function (err, docImage) {
+                            
+                                Storage.put('liveImage.jpeg', docImage)
+                            }).getBase64(Jimp.MIME_JPEG, function (err, base64Image) {
+                                setLiveImage(base64Image)
+                            })
+                        }
+                    })
+
+                    // update gesture state
+                    setAlertMessage(validationResult.message)
+                    setShowSpinner(false);
+                    updateGestureState();    
+                } else {
+                    // update gesture state
+                    setAlertMessage(validationResult.message)
+                    setShowSpinner(false);
+                    updateGestureState();
+                }
+            } else {
+                // unable to validate gesture - set Error Message
+                setAlertMessage(validationResult.message)
+                setShowSpinner(false);
             }     
-        })
-    };
+        }     
+    }
 
     function start_test(evt){
       setShowProgress(true);
