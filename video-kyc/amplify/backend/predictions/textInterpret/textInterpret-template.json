@@ -1,41 +1,26 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Identify resource(s) stack creation using Amplify CLI",
+    "Description": "Interpret resource(s) stack creation using Amplify CLI",
     "Parameters": {
-        "resourceName": {
-            "Type": "String"
-        },
-        "identifyPolicyName": {
-            "Type": "String"
-        },
-        "access": {
-            "Type": "String"
-        },
         "authRoleName": {
             "Type": "String"
         },
         "unauthRoleName": {
             "Type": "String"
         },
-        "adminAuthProtected": {
+        "interpretPolicyName": {
             "Type": "String"
         },
-        "adminGuestProtected": {
+        "resourceName": {
             "Type": "String"
         },
-        "identifyType": {
+        "access": {
             "Type": "String"
         },
-        "celebrityDetectionEnabled": {
+        "type": {
             "Type": "String"
         },
-        "adminTask": {
-            "Type": "String"
-        },
-        "maxEntities": {
-            "Type": "Number"
-        },
-        "folderPolicies": {
+        "interpretType": {
             "Type": "String"
         },
         "env": {
@@ -43,38 +28,6 @@
         }
     },
     "Conditions": {
-        "CreateAdminAuthProtected": {
-            "Fn::Not": [
-                {
-                    "Fn::Equals": [
-                        {
-                            "Ref": "adminAuthProtected"
-                        },
-                        "DISALLOW"
-                    ]
-                }
-            ]
-        },
-        "CreateAdminGuestProtected": {
-            "Fn::Not": [
-                {
-                    "Fn::Equals": [
-                        {
-                            "Ref": "adminGuestProtected"
-                        },
-                        "DISALLOW"
-                    ]
-                }
-            ]
-        },
-        "ShouldNotCreateEnvResources": {
-            "Fn::Equals": [
-                {
-                    "Ref": "env"
-                },
-                "NONE"
-            ]
-        },
         "AuthGuestRoleAccess": {
             "Fn::Equals": [
                 {
@@ -93,28 +46,23 @@
                         "Ref": "AWS::Region"
                     },
                     {
-                        "Ref": "identifyType"
+                        "Ref": "interpretType"
                     }
                 ]
             }
         },
-        "celebrityDetectionEnabled": {
+        "type": {
             "Value": {
-                "Ref": "celebrityDetectionEnabled"
-            }
-        },
-        "maxEntities": {
-            "Value": {
-                "Ref": "maxEntities"
+                "Ref": "type"
             }
         }
     },
     "Resources": {
-        "IdentifyEntitiesPolicy": {
+        "InterpretPolicy": {
             "Type": "AWS::IAM::Policy",
             "Properties": {
                 "PolicyName": {
-                    "Ref": "identifyPolicyName"
+                    "Ref": "interpretPolicyName"
                 },
                 "Roles": {
                     "Fn::If": [
@@ -140,9 +88,11 @@
                         {
                             "Effect": "Allow",
                             "Action": [
-                                "rekognition:DetectFaces",
-                                "rekognition:RecognizeCelebrities",
-                                "rekognition:CompareFaces"
+                                "comprehend:DetectSentiment",
+                                "comprehend:DetectEntities",
+                                "comprehend:DetectDominantLanguage",
+                                "comprehend:DetectSyntax",
+                                "comprehend:DetectKeyPhrases"
                             ],
                             "Resource": "*"
                         }
@@ -154,40 +104,40 @@
     "Mappings": {
         "RegionMapping": {
             "us-east-1": {
-                "identifyEntities": "us-east-1"
+                "interpretText": "us-east-1"
             },
             "us-east-2": {
-                "identifyEntities": "us-east-2"
+                "interpretText": "us-east-2"
             },
             "us-west-2": {
-                "identifyEntities": "us-west-2"
+                "interpretText": "us-west-2"
             },
             "ca-central-1": {
-                "identifyEntities": "us-east-1"
+                "interpretText": "ca-central-1"
             },
             "eu-west-1": {
-                "identifyEntities": "eu-west-1"
+                "interpretText": "eu-west-1"
             },
             "eu-west-2": {
-                "identifyEntities": "eu-west-2"
+                "interpretText": "eu-west-2"
             },
             "eu-central-1": {
-                "identifyEntities": "eu-central-1"
+                "interpretText": "eu-central-1"
             },
             "ap-northeast-1": {
-                "identifyEntities": "ap-northeast-1"
+                "interpretText": "us-east-1"
             },
             "ap-northeast-2": {
-                "identifyEntities": "ap-northeast-2"
+                "interpretText": "us-east-1"
             },
             "ap-southeast-1": {
-                "identifyEntities": "ap-southeast-1"
+                "interpretText": "ap-southeast-1"
             },
             "ap-southeast-2": {
-                "identifyEntities": "ap-southeast-2"
+                "interpretText": "ap-southeast-2"
             },
             "ap-south-1": {
-                "identifyEntities": "ap-south-1"
+                "interpretText": "us-east-1"
             }
         }
     }
