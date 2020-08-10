@@ -12,9 +12,13 @@ import Button from 'react-bootstrap/Button'
 
 import Liveliness from './Liveliness'
 
+
 export default () => {
 
   const [currentTabKey, setCurrentTabKey] = useState("welcome");
+
+  const [liveTestDetails, setLiveTestDetails] = useState({});
+  const [documentDetails, setDocumentDetails] = useState({});
   
   const startKyc = () => {
     setCurrentTabKey("Liveliness");
@@ -65,18 +69,20 @@ export default () => {
                 </p>
             </Jumbotron>
         </Tab>
-        <Tab eventKey="Liveliness" title="Liveliness Test">
+        <Tab eventKey="Liveliness" title="Liveliness Test" disabled>
             <div>
-                <Liveliness setTabStatus={setTabStatus}/>
+                <Liveliness setTabStatus={setTabStatus} setLiveTestDetails={setLiveTestDetails} />
             </div>
         </Tab>
-        <Tab eventKey="UploadDocs" title="Upload Documents">
+        <Tab eventKey="UploadDocs" title="Upload Documents" disabled>
             <div>
-            Upload Documents
+            
+            
+            
             </div>
         </Tab>
-        <Tab eventKey="AnalysisDetails" title="Details of Analysis">
-            Summary Details
+        <Tab eventKey="AnalysisDetails" title="Details of Analysis" disabled>
+          
         </Tab>
         </Tabs>
     </Col>
