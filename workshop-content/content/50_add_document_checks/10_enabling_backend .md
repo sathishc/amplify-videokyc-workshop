@@ -35,6 +35,6 @@ We have already enabled Predictions for face detection for Liveliness checks. We
 
 6. For "Who should have access?" Select - Auth users only
 
-6. **➡️ Now run** `amplify push'` to update the backend to enable Comprehend usage
+7. **➡️ Now run** `amplify push'` to update the backend to enable Comprehend usage
 
 
