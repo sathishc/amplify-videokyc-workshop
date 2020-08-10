@@ -7,12 +7,7 @@
 			"customAuth": false
 		}
 	},
-	"storage": {
-		"kycstore": {
-			"service": "S3",
-			"providerPlugin": "awscloudformation"
-		}
-	},
+	"storage": {},
 	"predictions": {
 		"faceId": {
 			"providerPlugin": "awscloudformation",
