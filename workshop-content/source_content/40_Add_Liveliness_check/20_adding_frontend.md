@@ -12,7 +12,7 @@ We will now create a front end for the liveness feature to capture the portrait 
 
 3. **➡️ Create a new file `src/components/gestures.json` with** ___CLIPBOARD_BUTTON f77ec89eb8e98c6d9706c221315a4a5b9ec0d618:video-kyc/src/components/gestures.json|
 
-4. **➡️ Create a new component `src/components/Liveliness.js` with** ___CLIPBOARD_BUTTON 1aab29be0c79aba0649fa6428507589920f1c943:video-kyc/src/components/Liveliness.js|
+4. **➡️ Create a new component `src/components/Liveliness.js` with** ___CLIPBOARD_BUTTON 6d5b9805fcaca7611f2e074b473a08596aad180c:video-kyc/src/components/Liveliness.js|
 
 5. **➡️ Update the KYCContainer component `src/components/KYCContainer.js` with** ___CLIPBOARD_BUTTON a6ce5f326220de2a9c2f24db73b7ef71e82536d0:video-kyc/src/components/KYCContainer.js|
 

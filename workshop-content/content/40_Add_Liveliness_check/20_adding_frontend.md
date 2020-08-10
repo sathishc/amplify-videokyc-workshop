@@ -59,177 +59,51 @@ index 0000000..e7198c3
 </textarea>
 {{< /safehtml >}}
 
-4. **➡️ Create a new component `src/components/Liveliness.js` with** <span class="clipBtn clipboard" data-clipboard-target="#id1aab29be0c79aba0649fa6428507589920f1c943videokycsrccomponentsLivelinessjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
+4. **➡️ Create a new component `src/components/Liveliness.js` with** <span class="clipBtn clipboard" data-clipboard-target="#id6d5b9805fcaca7611f2e074b473a08596aad180cvideokycsrccomponentsLivelinessjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
 {{< expand "Click to view diff" >}} {{< safehtml >}}
-<div id="diff-id1aab29be0c79aba0649fa6428507589920f1c943videokycsrccomponentsLivelinessjs"></div> <script type="text/template" data-diff-for="diff-id1aab29be0c79aba0649fa6428507589920f1c943videokycsrccomponentsLivelinessjs">commit 1aab29be0c79aba0649fa6428507589920f1c943
+<div id="diff-id6d5b9805fcaca7611f2e074b473a08596aad180cvideokycsrccomponentsLivelinessjs"></div> <script type="text/template" data-diff-for="diff-id6d5b9805fcaca7611f2e074b473a08596aad180cvideokycsrccomponentsLivelinessjs">commit 6d5b9805fcaca7611f2e074b473a08596aad180c
 Author: Sathish <sat.hariharan@gmail.com>
-Date:   Mon Aug 10 17:58:34 2020 +0530
+Date:   Mon Aug 10 21:33:48 2020 +0530
 
-    add Liveliness component
+    remove storage
 
 diff --git a/video-kyc/src/components/Liveliness.js b/video-kyc/src/components/Liveliness.js
-index 9b2a3ed..3ce67d3 100644
+index 3ce67d3..2f8acf4 100644
 --- a/video-kyc/src/components/Liveliness.js
 +++ b/video-kyc/src/components/Liveliness.js
-@@ -5,6 +5,7 @@ import gest_data from './gestures.json'
- import Card from "react-bootstrap/Card"
- import ProgressBar from "react-bootstrap/ProgressBar"
+@@ -7,7 +7,7 @@ import ProgressBar from "react-bootstrap/ProgressBar"
  import _ from 'lodash'
-+import Jimp from 'jimp'
+ import Jimp from 'jimp'
  
- import { Auth, Storage, Logger } from 'aws-amplify'
+-import { Auth, Storage, Logger } from 'aws-amplify'
++import { Auth, Logger } from 'aws-amplify'
  import AWS from 'aws-sdk'
-@@ -20,7 +21,7 @@ const videoConstraints = {
-     facingMode: "user"
-   };
+ import awsConfig from "../aws-exports"
  
--  export default ({setTabStatus,faceDetails,updateFaceDetails}) => {
-+  export default ({setTabStatus, setLiveTestDetails}) => {
-     const [gesture, setGesture] = useState(null);
-     const [showSpinner,setShowSpinner] = useState(false);
-     const [alertMessage, setAlertMessage] = useState("You will be asked to do a series of random gestures which will enable us to detect a live feed.  ");
-@@ -28,6 +29,11 @@ const videoConstraints = {
-     const [showWebcam, setShowWebcam] = useState(false);
-     const [progressValue, setProgressValue] = useState(5);
+@@ -35,7 +35,6 @@ const videoConstraints = {
+     const [liveImage, setLiveImage] = useState(null);
  
-+    // identification state from liveness test
-+    const [liveGender, setLiveGender] = useState("");
-+    const [ageRange, setAgeRange] = useState("");    
-+    const [liveImage, setLiveImage] = useState(null);
-+
      useEffect(() => {
-         Storage.configure({ level: 'private' });
+-        Storage.configure({ level: 'private' });
          Auth.currentCredentials().then(function(creds){
-@@ -50,6 +56,11 @@ const videoConstraints = {
-     }
-     
-     const proceedToNext = () => {
-+        setLiveTestDetails({
-+           liveGender:liveGender,
-+           ageRange:ageRange,
-+           liveImage:liveImage 
-+        })  
-       setTabStatus("UploadDocs");
-     }
- 
-@@ -108,57 +119,76 @@ const videoConstraints = {
-     }
- 
- 
--    const requestGesture = () => {
-+    const requestGesture = async () => {
-       
-       
-         setShowSpinner(true);
-       
-         const imageBase64String = webcamRef.current.getScreenshot({width: 800, height: 450}); 
-         const base64Image = imageBase64String.split(';base64,').pop();  
--        const binaryImg = new Buffer(base64Image, 'base64');    
-+        const imageBuffer = new Buffer(base64Image, 'base64');    
- 
-         let rekognition = new AWS.Rekognition();
-         let params = {
-         Attributes: [ "ALL" ],
-             Image: {
--                Bytes:binaryImg
-+                Bytes:imageBuffer
-             }
-         };
--        console.log("Calling rekognition")
--        rekognition.detectFaces(params, function(err, data) {
--            if (err) 
--                console.log(err, err.stack); // an error occurred
--            else { 
--               let validationResult = validateGesture(gesture, data) 
--               if(validationResult.result){
--                    if(gesture === 'smile'){
--                        Storage.put('gesture1.jpeg', binaryImg)
--                            .then (result => {
--                                console.log(result)
--                                setAlertMessage(validationResult.message)
--                                setShowSpinner(false);
--                                updateGestureState();
--                            }) 
--                            .catch(err => {
--                                console.log(err)
--                                setAlertMessage("Error processing smile")
--                                setShowSpinner(false);
--                                setGesture("smile")
--                            });
--                    } else {
--                        // update gesture state
--                        setAlertMessage(validationResult.message)
--                        setShowSpinner(false);
--                        updateGestureState();
--                    }
--               } else {
--                 // unable to validate gesture - set Error Message
--                 setAlertMessage(validationResult.message)
--                 setShowSpinner(false);
--               }     
-+        
-+        let faceDetectResponse = await rekognition.detectFaces(params).promise()
-+
-+        if (faceDetectResponse.$response.error) {
-+            setShowSpinner(false);
-+            setAlertMessage(faceDetectResponse.$response.error.message)
-+            return new Promise((resolve, reject) => {
-+                throw new Error(faceDetectResponse.$response.error.message);
-+            }) 
-+        }
-+        else { 
-+            let validationResult = validateGesture(gesture, faceDetectResponse) 
-+            if(validationResult.result){
-+                if(gesture === 'smile'){
-+
-+                    // set the gender
-+                    setLiveGender(faceDetectResponse.FaceDetails[0].Gender.Value)
-+                    setAgeRange(faceDetectResponse.FaceDetails[0].AgeRange.Value)
-+
-+                    // get the bounding box
-+                    let imageBounds = faceDetectResponse.FaceDetails[0].BoundingBox
-+                    logger.info(imageBounds)
-+                    // crop the face and store the image
-+                    Jimp.read(imageBuffer, (err, image) => {
-+                        if (err) throw err;
-+                        else {
-+                        
-+                        image.crop(image.bitmap.width*imageBounds.Left - 15, image.bitmap.height*imageBounds.Top - 15, image.bitmap.width*imageBounds.Width + 30, image.bitmap.height*imageBounds.Height + 30)
-+                            .getBuffer(Jimp.MIME_JPEG, function (err, docImage) {
-+                            
-+                                Storage.put('liveImage.jpeg', docImage)
-+                            }).getBase64(Jimp.MIME_JPEG, function (err, base64Image) {
-+                                setLiveImage(base64Image)
-+                            })
-+                        }
-+                    })
-+
-+                    // update gesture state
-+                    setAlertMessage(validationResult.message)
-+                    setShowSpinner(false);
-+                    updateGestureState();    
-+                } else {
-+                    // update gesture state
-+                    setAlertMessage(validationResult.message)
-+                    setShowSpinner(false);
-+                    updateGestureState();
-+                }
-+            } else {
-+                // unable to validate gesture - set Error Message
-+                setAlertMessage(validationResult.message)
-+                setShowSpinner(false);
-             }     
--        })
--    };
-+        }     
-+    }
- 
-     function start_test(evt){
-       setShowProgress(true);
+             AWS.config.update(creds);   
+         })
+@@ -163,10 +162,7 @@ const videoConstraints = {
+                         else {
+                         
+                         image.crop(image.bitmap.width*imageBounds.Left - 15, image.bitmap.height*imageBounds.Top - 15, image.bitmap.width*imageBounds.Width + 30, image.bitmap.height*imageBounds.Height + 30)
+-                            .getBuffer(Jimp.MIME_JPEG, function (err, docImage) {
+-                            
+-                                Storage.put('liveImage.jpeg', docImage)
+-                            }).getBase64(Jimp.MIME_JPEG, function (err, base64Image) {
++                            .getBase64(Jimp.MIME_JPEG, function (err, base64Image) {
+                                 setLiveImage(base64Image)
+                             })
+                         }
 </script>
 {{< /safehtml >}} {{< /expand >}}
 {{< safehtml >}}
-<textarea id="id1aab29be0c79aba0649fa6428507589920f1c943videokycsrccomponentsLivelinessjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React,{ useState, useEffect } from "react";
+<textarea id="id6d5b9805fcaca7611f2e074b473a08596aad180cvideokycsrccomponentsLivelinessjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React,{ useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import Button from 'react-bootstrap/Button'
 import gest_data from './gestures.json'
@@ -238,7 +112,7 @@ import ProgressBar from "react-bootstrap/ProgressBar"
 import _ from 'lodash'
 import Jimp from 'jimp'
 
-import { Auth, Storage, Logger } from 'aws-amplify'
+import { Auth, Logger } from 'aws-amplify'
 import AWS from 'aws-sdk'
 import awsConfig from "../aws-exports"
 
@@ -266,7 +140,6 @@ const videoConstraints = {
     const [liveImage, setLiveImage] = useState(null);
 
     useEffect(() => {
-        Storage.configure({ level: 'private' });
         Auth.currentCredentials().then(function(creds){
             AWS.config.update(creds);   
         })
@@ -394,10 +267,7 @@ const videoConstraints = {
                         else {
                         
                         image.crop(image.bitmap.width*imageBounds.Left - 15, image.bitmap.height*imageBounds.Top - 15, image.bitmap.width*imageBounds.Width + 30, image.bitmap.height*imageBounds.Height + 30)
-                            .getBuffer(Jimp.MIME_JPEG, function (err, docImage) {
-                            
-                                Storage.put('liveImage.jpeg', docImage)
-                            }).getBase64(Jimp.MIME_JPEG, function (err, base64Image) {
+                            .getBase64(Jimp.MIME_JPEG, function (err, base64Image) {
                                 setLiveImage(base64Image)
                             })
                         }
