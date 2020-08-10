@@ -10,6 +10,8 @@ We will now create a front end for the liveness feature to capture the portrait 
 
 2. **➡️ Run** `npm install --save 'lodash'` as we use this library for data structures
 
+3. **➡️ Run** `npm install --save 'Jimp'` as we use this library for image cropping
+
 3. **➡️ Create a new file `src/components/gestures.json` with** ___CLIPBOARD_BUTTON f77ec89eb8e98c6d9706c221315a4a5b9ec0d618:video-kyc/src/components/gestures.json|
 
 4. **➡️ Create a new component `src/components/Liveliness.js` with** ___CLIPBOARD_BUTTON 6d5b9805fcaca7611f2e074b473a08596aad180c:video-kyc/src/components/Liveliness.js|

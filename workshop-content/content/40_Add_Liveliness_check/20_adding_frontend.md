@@ -10,6 +10,8 @@ We will now create a front end for the liveness feature to capture the portrait 
 
 2. **➡️ Run** `npm install --save 'lodash'` as we use this library for data structures
 
+3. **➡️ Run** `npm install --save 'Jimp'` as we use this library for image cropping
+
 3. **➡️ Create a new file `src/components/gestures.json` with** <span class="clipBtn clipboard" data-clipboard-target="#idf77ec89eb8e98c6d9706c221315a4a5b9ec0d618videokycsrccomponentsgesturesjson"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
 {{< expand "Click to view diff" >}} {{< safehtml >}}
 <div id="diff-idf77ec89eb8e98c6d9706c221315a4a5b9ec0d618videokycsrccomponentsgesturesjson"></div> <script type="text/template" data-diff-for="diff-idf77ec89eb8e98c6d9706c221315a4a5b9ec0d618videokycsrccomponentsgesturesjson">commit f77ec89eb8e98c6d9706c221315a4a5b9ec0d618
