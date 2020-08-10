@@ -12,6 +12,7 @@ import Button from 'react-bootstrap/Button'
 
 import Liveliness from './Liveliness'
 import AnalyzeDocs from './AnalyzeDocs'
+import Summary from './Summary'
 
 
 export default () => {
@@ -81,7 +82,7 @@ export default () => {
             </div>
         </Tab>
         <Tab eventKey="AnalysisDetails" title="Details of Analysis" disabled>
-          
+        <Summary setTabStatus={setTabStatus} documentDetails={documentDetails} liveTestDetails={liveTestDetails} />
         </Tab>
         </Tabs>
     </Col>
