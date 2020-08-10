@@ -11,6 +11,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron'
 import Button from 'react-bootstrap/Button'
 
 import Liveliness from './Liveliness'
+import AnalyzeDocs from './AnalyzeDocs'
 
 
 export default () => {
@@ -76,9 +77,7 @@ export default () => {
         </Tab>
         <Tab eventKey="UploadDocs" title="Upload Documents" disabled>
             <div>
-            
-            
-            
+              <AnalyzeDocs setTabStatus={setTabStatus} setDocumentDetails={setDocumentDetails} />
             </div>
         </Tab>
         <Tab eventKey="AnalysisDetails" title="Details of Analysis" disabled>
