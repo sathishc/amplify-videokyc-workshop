@@ -7,7 +7,7 @@ import ProgressBar from "react-bootstrap/ProgressBar"
 import _ from 'lodash'
 import Jimp from 'jimp'
 
-import { Auth, Storage, Logger } from 'aws-amplify'
+import { Auth, Logger } from 'aws-amplify'
 import AWS from 'aws-sdk'
 import awsConfig from "../aws-exports"
 
@@ -35,7 +35,6 @@ const videoConstraints = {
     const [liveImage, setLiveImage] = useState(null);
 
     useEffect(() => {
-        Storage.configure({ level: 'private' });
         Auth.currentCredentials().then(function(creds){
             AWS.config.update(creds);   
         })
@@ -163,10 +162,7 @@ const videoConstraints = {
                         else {
                         
                         image.crop(image.bitmap.width*imageBounds.Left - 15, image.bitmap.height*imageBounds.Top - 15, image.bitmap.width*imageBounds.Width + 30, image.bitmap.height*imageBounds.Height + 30)
-                            .getBuffer(Jimp.MIME_JPEG, function (err, docImage) {
-                            
-                                Storage.put('liveImage.jpeg', docImage)
-                            }).getBase64(Jimp.MIME_JPEG, function (err, base64Image) {
+                            .getBase64(Jimp.MIME_JPEG, function (err, base64Image) {
                                 setLiveImage(base64Image)
                             })
                         }
