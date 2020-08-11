@@ -61,6 +61,12 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
             setAlertMessage(compareFacesResponse.$response.error.message)
         } else {
             logger.info('compare results', compareFacesResponse)
+
+            if(compareFacesResponse.FaceMatches.length === 0){
+                setAlertMessage(" Did not pass Face similarity test. Try again !") 
+                setFaceSimilarity(0)
+            }
+
             setFaceSimilarity(compareFacesResponse.FaceMatches[0].Similarity)
             if(compareFacesResponse.FaceMatches[0].Similarity > 80){
                 setAlertMessage(" You have successfully completed the KYC")
@@ -80,7 +86,7 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
             <tbody>
                 <tr>
                     <td>
-                <Card>
+                <Card border="light">
                     <Card.Header>
                         Liveness Test Data 
                     </Card.Header>
@@ -111,7 +117,7 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
                 </Card>
                 </td>
                 <td>
-                <Card>
+                <Card border="light">
                     <Card.Header>
                        Data Extracted from ID documents.
                     </Card.Header>
@@ -120,6 +126,11 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
                             <Row>
                             <Table responsive>
                                 <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>{documentDetails["documentType"]}</td>
+                                    </tr>
+
                                     <tr>
                                     <td>Name</td>
                                     <td>{documentDetails["name"]}</td>

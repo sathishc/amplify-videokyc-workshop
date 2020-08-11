@@ -38,6 +38,7 @@ const side_data = [
     const [dob, setDob] = useState("");
     const [userName, setUserName] = useState("");
     const [documentImage, setDocumentImage] = useState("");
+    const [documentType, setDocumentType] = useState("");
     
 
     useEffect(() => {
@@ -67,6 +68,7 @@ const side_data = [
 
     const proceedToNext = () => {
         setDocumentDetails({
+            documentType:documentType,
             name:userName,
             dateOfBirth:dob,
             gender:gender,
@@ -75,7 +77,42 @@ const side_data = [
       setTabStatus("AnalysisDetails");
     }
 
-  
+    const captureLabels = async (imageBuffer) => {
+        let rekognition = new AWS.Rekognition();
+        
+        logger.info("Calling rekognition face Detect")
+        let faceDetectParams = {
+            Image: {
+                Bytes:imageBuffer
+            }
+        };
+
+        let labelDetectResponse = await rekognition.detectLabels(faceDetectParams).promise();
+        if(labelDetectResponse.$response.error) {
+            setShowSpinner(false);
+            setAlertMessage(labelDetectResponse.$response.error.message)
+            return new Promise((resolve, reject) => {
+                throw new Error(labelDetectResponse.$response.error.message);
+            }) 
+        }
+        else {
+            logger.info('rekgn label', labelDetectResponse)
+            let PassportLabel = _.find(labelDetectResponse.Labels, (label) => {return (label.Name === 'Passport')})
+            let QRLabel = _.find(labelDetectResponse.Labels, (label) => {return (label.Name === 'QR Code')})
+        
+
+            if(QRLabel) {
+                setDocumentType('Aadhaar')
+            } else if (PassportLabel){
+                setDocumentType('Passport')
+            } else {
+                setDocumentType('Unknown Document Type')
+            }
+            setAlertMessage("Validated Document")
+        }
+
+        return labelDetectResponse
+    }
 
     const captureFaceDetails = async (imageBuffer) => {
         let rekognition = new AWS.Rekognition();
@@ -86,7 +123,7 @@ const side_data = [
             Image: {
                 Bytes:imageBuffer
             }
-        };
+        };        
         let faceDetectResponse = await rekognition.detectFaces(faceDetectParams).promise();
         if(faceDetectResponse.$response.error) {
             setShowSpinner(false);
@@ -107,7 +144,6 @@ const side_data = [
 
             setGender(faceDetectResponse.FaceDetails[0].Gender.Value)
             setAlertMessage("Captured image details")
-            setProgressValue(50)
 
             // get the bounding box
             let imageBounds = faceDetectResponse.FaceDetails[0].BoundingBox
@@ -179,7 +215,6 @@ const side_data = [
             } else {
                 
                 setUserName(personEntity.Text)
-                setProgressValue(70)
             }
             
             let dobEntity = _.find(filteredEntities,(entity) => entity.Type === 'DATE')
@@ -191,12 +226,10 @@ const side_data = [
                 }) 
             } else {
                 setDob(dobEntity.Text)
-                setProgressValue(80)
             }
             
             
             setAlertMessage("Captured Document details")
-            setProgressValue(90)
         }
 
         return detectEntitiesResponse
@@ -213,9 +246,17 @@ const side_data = [
         const binaryImg = new Buffer(base64Image, 'base64');    
 
         try {
-            await captureFaceDetails(binaryImg)
+
+            await captureLabels(binaryImg)
+
+            setProgressValue(40)
 
             await captureTextDetails(binaryImg)
+
+            setProgressValue(80)
+
+            await captureFaceDetails(binaryImg)
+
 
             setProgressValue(100)    
             setShowSpinner(false)
