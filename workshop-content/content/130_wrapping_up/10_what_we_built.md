@@ -12,21 +12,16 @@ Here's a reminder of everything we accomplished. We:
 
 - Added user authentication with a complete sign up and sign in flow
 
-- Created a GraphQL API to securely manage photo albums backed by DynamoDB tables
+- Added Liveliness Check feature using Amazon Rekognition
 
-- Added the ability to create and view albums
+- Added a photo ID document check feature using Amazon Rekognition and Comprehend
 
-- Added the ability to upload photos to an album, complete with automatic thumbnail creation
+- Added a face comparison feature using Amazon Rekognition
 
-- Introduced 'load more...' pagination for albums with many photos
 
-- Added automatic label detection for photos
+- Built a production-ready version of the app and deployed it to the amplify console
 
-- Added the ability to search for all photos for a given label (scoped by each user's album permissions)
-
-- Built a production-ready version of the app and deployed it to S3 for web hosting
-
-The backend for our photo albums app is entirely serverless, which means it's extremely cost efficient, scalable, and highly available thanks to services from AWS. 
+The backend for our self services KYC app is entirely serverless, which means it's extremely cost efficient, scalable, and highly available thanks to services from AWS. 
 
 Not bad for a few hours of work! 
 
