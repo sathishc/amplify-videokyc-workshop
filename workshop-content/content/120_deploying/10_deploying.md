@@ -1,5 +1,5 @@
 +++
-title = "Deploying our app to S3"
+title = "Deploying our app to Amplify"
 chapter = false
 weight = 120
 +++
@@ -16,24 +16,13 @@ The AWS Amplify CLI makes it easy to deploy our app to a publicly accessible buc
     ```bash
     $ amplify hosting add
 
-    ? Select the environment setup: 
+    ?  Select the plugin module to execute: 
 
-    DEV (S3 only with HTTP)
+    Hosting with Amplify Console (Managed hosting with custom domains, Contin
+uous deployment)
 
+    ? choose a type Manual deployment
 
-    ? hosting bucket name 
-
-    Accept the propossed one that looks like video-kyc-19700101010203--hostingbucket
-
-
-    ? index doc for the website 
-
-    index.html
-
-
-    ? error doc for the website 
-
-    index.html
     ```
 
 
