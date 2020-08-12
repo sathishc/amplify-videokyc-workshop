@@ -1,10 +1,9 @@
 baseURL = "https://amplify-workshop.go-aws.com"
 languageCode = "en-us"
 defaultContentLanguage = "en"
-title = "Amplify / AppSync / React Workshop"
+title = "Amplify / AI Services / Workshop"
 theme = "learn"
 uglyurls = true
-googleAnalytics = "UA-129511631-1"
 sectionPagesMenu = "main"
 pygmentsCodeFences = true
 #pygmentsCodeFencesGuessSyntax = true
@@ -21,21 +20,14 @@ unsafe = true # Optional, allows HTML inside your CommonMark content
 [params]
 themeVariant = "mine"
 showVisitedLinks = false
-author = "Gabe Hollombe"
-description = "Amplify / AppSync / React Workshop"
+author = "Sathish Hariharab"
+description = "Amplify / AI Services / Workshop"
 disableSearch = false
 disableAssetsBusting = false
 disableLanguageSwitchingButton = true
 disableShortcutsTitle=true
 
 
-# [menu]
-#   [[menu.main]]
-#     identifier = "Prerequisites"
-#     name = "This is the Mu track"
-#     title = "Workshop using Mu"
-#     url = "/mu/"
-#     weight = -110
 
 [[menu.shortcuts]]
 
