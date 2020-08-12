@@ -81,7 +81,7 @@ const videoConstraints = {
 
     const validateGesture = (gesture, data) => {
         logger.info("Validating gesture",data);
-        if(data.length == 0){
+        if(data.length === 0){
             // more than one face
             return {result:false, message:"Could not recognize a face. Try again "}
         }
@@ -94,20 +94,20 @@ const videoConstraints = {
 
         if(gesture === "smile"){
             
-            if(data.FaceDetails[0].Smile.Value == true){
+            if(data.FaceDetails[0].Smile.Value === true){
                 return {result:true, message:"Thank you"}
             } else {
                 return {result:false, message:"Failed to validate smile. Try again "}
             }
             
         } else if(gesture === "eyesClose") {
-            if(data.FaceDetails[0].EyesOpen.Value == false){
+            if(data.FaceDetails[0].EyesOpen.Value === false){
                 return {result:true, message:"Thank you"}
             } else {
                 return {result:false, message:"Failed to validate closed eyes. Try again "}
             }
         } else if(gesture === "mouthOpen") {
-            if(data.FaceDetails[0].MouthOpen.Value == true){
+            if(data.FaceDetails[0].MouthOpen.Value === true){
                 return {result:true, message:"You can successfully completed Liveness checks !! "}
             } else {
                 return {result:false, message:"Failed to validate open mouth. Try again "}
@@ -202,7 +202,7 @@ const videoConstraints = {
                 {alertMessage} 
                 {!showProgress && <Button variant="primary" onClick={start_test}>Start</Button>}
                 {showProgress && progressValue < 100 && <Button variant="primary" onClick={requestGesture}>Validate</Button>}
-                {progressValue == 100 && <Button variant="primary" onClick={proceedToNext}>Continue</Button>}
+                {progressValue === 100 && <Button variant="primary" onClick={proceedToNext}>Continue</Button>}
             </Card.Header>
             
             <Card.Body>

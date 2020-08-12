@@ -1,5 +1,4 @@
 import React,{ useState, useEffect } from "react";
-import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
@@ -103,7 +102,7 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
                                     <tr>
                                     <td>Live Image</td>
                                     <td>
-                                        <img src={`${liveTestDetails['liveImage']}`} />
+                                        <img alt="Live snapshot" src={`${liveTestDetails['liveImage']}`} />
                                     </td>
                                     </tr>
                                    
@@ -149,7 +148,7 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
                                     <tr>
                                     <td>Image</td>
                                     <td>
-                                        <img src={`${documentDetails['userImage']}`} />
+                                        <img  alt="User from Document" src={`${documentDetails['userImage']}`} />
                                     </td>
                                     </tr>
                                    
