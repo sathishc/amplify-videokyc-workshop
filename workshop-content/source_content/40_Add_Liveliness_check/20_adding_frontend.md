@@ -12,11 +12,13 @@ We will now create a front end for the liveness feature to capture the portrait 
 
 3. **➡️ Run** `npm install --save 'Jimp'` as we use this library for image cropping
 
-3. **➡️ Create a new file `src/components/gestures.json` with** ___CLIPBOARD_BUTTON f77ec89eb8e98c6d9706c221315a4a5b9ec0d618:video-kyc/src/components/gestures.json|
+4. **➡️ Run** `npm install --save 'aws-sdk'` as we use direct calls into the SDK for using features in Rekognition and later with Comprehend
 
-4. **➡️ Create a new component `src/components/Liveliness.js` with** ___CLIPBOARD_BUTTON 6d5b9805fcaca7611f2e074b473a08596aad180c:video-kyc/src/components/Liveliness.js|
+5. **➡️ Create a new file `src/components/gestures.json` with** ___CLIPBOARD_BUTTON f77ec89eb8e98c6d9706c221315a4a5b9ec0d618:video-kyc/src/components/gestures.json|
 
-5. **➡️ Update the KYCContainer component `src/components/KYCContainer.js` with** ___CLIPBOARD_BUTTON a6ce5f326220de2a9c2f24db73b7ef71e82536d0:video-kyc/src/components/KYCContainer.js|
+6. **➡️ Create a new component `src/components/Liveliness.js` with** ___CLIPBOARD_BUTTON 6d5b9805fcaca7611f2e074b473a08596aad180c:video-kyc/src/components/Liveliness.js|
+
+7. **➡️ Update the KYCContainer component `src/components/KYCContainer.js` with** ___CLIPBOARD_BUTTON a6ce5f326220de2a9c2f24db73b7ef71e82536d0:video-kyc/src/components/KYCContainer.js|
 
 
 Though we added Predictions to amplify, we dont use the entity identification functions to detect facial characteristics as it does not have full support for detection. We instead added Predictions to enable access to the Rekognition backend for Amplify credentials. We need to initialize the AWS SDK using credentials from the Auth.currentCredentials(). You should now have the Liveliness checks working !!

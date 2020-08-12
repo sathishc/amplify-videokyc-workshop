@@ -12,7 +12,9 @@ We will now create a front end for the liveness feature to capture the portrait 
 
 3. **➡️ Run** `npm install --save 'Jimp'` as we use this library for image cropping
 
-3. **➡️ Create a new file `src/components/gestures.json` with** <span class="clipBtn clipboard" data-clipboard-target="#idf77ec89eb8e98c6d9706c221315a4a5b9ec0d618videokycsrccomponentsgesturesjson"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
+4. **➡️ Run** `npm install --save 'aws-sdk'` as we use direct calls into the SDK for using features in Rekognition and later with Comprehend
+
+5. **➡️ Create a new file `src/components/gestures.json` with** <span class="clipBtn clipboard" data-clipboard-target="#idf77ec89eb8e98c6d9706c221315a4a5b9ec0d618videokycsrccomponentsgesturesjson"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
 {{< expand "Click to view diff" >}} {{< safehtml >}}
 <div id="diff-idf77ec89eb8e98c6d9706c221315a4a5b9ec0d618videokycsrccomponentsgesturesjson"></div> <script type="text/template" data-diff-for="diff-idf77ec89eb8e98c6d9706c221315a4a5b9ec0d618videokycsrccomponentsgesturesjson">commit f77ec89eb8e98c6d9706c221315a4a5b9ec0d618
 Author: Sathish <sat.hariharan@gmail.com>
@@ -61,7 +63,7 @@ index 0000000..e7198c3
 </textarea>
 {{< /safehtml >}}
 
-4. **➡️ Create a new component `src/components/Liveliness.js` with** <span class="clipBtn clipboard" data-clipboard-target="#id6d5b9805fcaca7611f2e074b473a08596aad180cvideokycsrccomponentsLivelinessjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
+6. **➡️ Create a new component `src/components/Liveliness.js` with** <span class="clipBtn clipboard" data-clipboard-target="#id6d5b9805fcaca7611f2e074b473a08596aad180cvideokycsrccomponentsLivelinessjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
 {{< expand "Click to view diff" >}} {{< safehtml >}}
 <div id="diff-id6d5b9805fcaca7611f2e074b473a08596aad180cvideokycsrccomponentsLivelinessjs"></div> <script type="text/template" data-diff-for="diff-id6d5b9805fcaca7611f2e074b473a08596aad180cvideokycsrccomponentsLivelinessjs">commit 6d5b9805fcaca7611f2e074b473a08596aad180c
 Author: Sathish <sat.hariharan@gmail.com>
@@ -340,7 +342,7 @@ const videoConstraints = {
 </textarea>
 {{< /safehtml >}}
 
-5. **➡️ Update the KYCContainer component `src/components/KYCContainer.js` with** <span class="clipBtn clipboard" data-clipboard-target="#ida6ce5f326220de2a9c2f24db73b7ef71e82536d0videokycsrccomponentsKYCContainerjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
+7. **➡️ Update the KYCContainer component `src/components/KYCContainer.js` with** <span class="clipBtn clipboard" data-clipboard-target="#ida6ce5f326220de2a9c2f24db73b7ef71e82536d0videokycsrccomponentsKYCContainerjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
 {{< expand "Click to view diff" >}} {{< safehtml >}}
 <div id="diff-ida6ce5f326220de2a9c2f24db73b7ef71e82536d0videokycsrccomponentsKYCContainerjs"></div> <script type="text/template" data-diff-for="diff-ida6ce5f326220de2a9c2f24db73b7ef71e82536d0videokycsrccomponentsKYCContainerjs">commit a6ce5f326220de2a9c2f24db73b7ef71e82536d0
 Author: Sathish <sat.hariharan@gmail.com>
