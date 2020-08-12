@@ -21,7 +21,7 @@ const videoConstraints = {
 };
 
 const side_data = [
-    {"name":"front", "description":"Show the front of the Photo ID to the camera"},
+    {"name":"front", "description":"Show the photo page of your photo id (Aadhaar or Passport in India) to the camera"},
     {"name":"back", "description":"Show the back of the Photo ID to the camera"}
 ]  
 
