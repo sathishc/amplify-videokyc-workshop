@@ -22,20 +22,6 @@ npm install -g @aws-amplify/cli
 # Install jq
 sudo yum install jq -y
 
-# Install Python3
-
-sudo yum install libssl-dev openssl
-wget https://www.python.org/ftp/python/3.6.11/Python-3.6.11.tgz
-tar xzvf Python-3.6.11.tgz
-cd Python-3.6.11
-./configure
-make
-sudo make install
-
-# Install Pipenv
-
-pip3 install --user pipenv
-
 ```
 
 {{% notice note %}}
