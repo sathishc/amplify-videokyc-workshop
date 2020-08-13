@@ -162,7 +162,7 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
                 </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td colSpan="2">
                     <Card>
                         <Card.Header>
                         Compare Faces to complete KYC
