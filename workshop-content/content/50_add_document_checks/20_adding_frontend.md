@@ -6,20 +6,19 @@ weight = 20
 
 We will now create a front end for the Document check feature to capture the phot id of the user. For ths we add a new Upload component to our react app. We have already added all necessary libraries for the previous component. We jut need to add code to enable this feature.
 
-1. **➡️ Create a new component `src/components/AnalyzeDocs.js` with** <span class="clipBtn clipboard" data-clipboard-target="#idf7530e6d5fa7c225620938a8303c2200d5861884videokycsrccomponentsAnalyzeDocsjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
+1. **➡️ Create a new component `src/components/AnalyzeDocs.js` with** <span class="clipBtn clipboard" data-clipboard-target="#id38f2d585f05ca7e07b83d9cd8093d39ac8a76c9fvideokycsrccomponentsAnalyzeDocsjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
 {{< expand "Click to view diff" >}} {{< safehtml >}}
-<div id="diff-idf7530e6d5fa7c225620938a8303c2200d5861884videokycsrccomponentsAnalyzeDocsjs"></div> <script type="text/template" data-diff-for="diff-idf7530e6d5fa7c225620938a8303c2200d5861884videokycsrccomponentsAnalyzeDocsjs">commit f7530e6d5fa7c225620938a8303c2200d5861884
+<div id="diff-id38f2d585f05ca7e07b83d9cd8093d39ac8a76c9fvideokycsrccomponentsAnalyzeDocsjs"></div> <script type="text/template" data-diff-for="diff-id38f2d585f05ca7e07b83d9cd8093d39ac8a76c9fvideokycsrccomponentsAnalyzeDocsjs">commit 38f2d585f05ca7e07b83d9cd8093d39ac8a76c9f
 Author: Sathish <sat.hariharan@gmail.com>
-Date:   Mon Aug 10 22:03:01 2020 +0530
+Date:   Thu Aug 13 15:52:01 2020 +0530
 
-    add AnalyzeDocs
+    update
 
 diff --git a/video-kyc/src/components/AnalyzeDocs.js b/video-kyc/src/components/AnalyzeDocs.js
-new file mode 100644
-index 0000000..2d4bb99
---- /dev/null
+index e69de29..4baf754 100644
+--- a/video-kyc/src/components/AnalyzeDocs.js
 +++ b/video-kyc/src/components/AnalyzeDocs.js
-@@ -0,0 +1,280 @@
+@@ -0,0 +1,321 @@
 +import React,{ useState, useEffect } from "react";
 +import Webcam from "react-webcam";
 +import Button from 'react-bootstrap/Button'
@@ -43,7 +42,7 @@ index 0000000..2d4bb99
 +};
 +
 +const side_data = [
-+    {"name":"front", "description":"Show the front of the Photo ID to the camera"},
++    {"name":"front", "description":"Show the photo page of your photo id (Aadhaar or Passport in India) to the camera"},
 +    {"name":"back", "description":"Show the back of the Photo ID to the camera"}
 +]  
 +
@@ -60,6 +59,7 @@ index 0000000..2d4bb99
 +    const [dob, setDob] = useState("");
 +    const [userName, setUserName] = useState("");
 +    const [documentImage, setDocumentImage] = useState("");
++    const [documentType, setDocumentType] = useState("");
 +    
 +
 +    useEffect(() => {
@@ -89,6 +89,7 @@ index 0000000..2d4bb99
 +
 +    const proceedToNext = () => {
 +        setDocumentDetails({
++            documentType:documentType,
 +            name:userName,
 +            dateOfBirth:dob,
 +            gender:gender,
@@ -97,7 +98,42 @@ index 0000000..2d4bb99
 +      setTabStatus("AnalysisDetails");
 +    }
 +
-+  
++    const captureLabels = async (imageBuffer) => {
++        let rekognition = new AWS.Rekognition();
++        
++        logger.info("Calling rekognition face Detect")
++        let faceDetectParams = {
++            Image: {
++                Bytes:imageBuffer
++            }
++        };
++
++        let labelDetectResponse = await rekognition.detectLabels(faceDetectParams).promise();
++        if(labelDetectResponse.$response.error) {
++            setShowSpinner(false);
++            setAlertMessage(labelDetectResponse.$response.error.message)
++            return new Promise((resolve, reject) => {
++                throw new Error(labelDetectResponse.$response.error.message);
++            }) 
++        }
++        else {
++            logger.info('rekgn label', labelDetectResponse)
++            let PassportLabel = _.find(labelDetectResponse.Labels, (label) => {return (label.Name === 'Passport')})
++            let QRLabel = _.find(labelDetectResponse.Labels, (label) => {return (label.Name === 'QR Code')})
++        
++
++            if(QRLabel) {
++                setDocumentType('Aadhaar')
++            } else if (PassportLabel){
++                setDocumentType('Passport')
++            } else {
++                setDocumentType('Unknown Document Type')
++            }
++            setAlertMessage("Validated Document")
++        }
++
++        return labelDetectResponse
++    }
 +
 +    const captureFaceDetails = async (imageBuffer) => {
 +        let rekognition = new AWS.Rekognition();
@@ -108,7 +144,7 @@ index 0000000..2d4bb99
 +            Image: {
 +                Bytes:imageBuffer
 +            }
-+        };
++        };        
 +        let faceDetectResponse = await rekognition.detectFaces(faceDetectParams).promise();
 +        if(faceDetectResponse.$response.error) {
 +            setShowSpinner(false);
@@ -129,7 +165,6 @@ index 0000000..2d4bb99
 +
 +            setGender(faceDetectResponse.FaceDetails[0].Gender.Value)
 +            setAlertMessage("Captured image details")
-+            setProgressValue(50)
 +
 +            // get the bounding box
 +            let imageBounds = faceDetectResponse.FaceDetails[0].BoundingBox
@@ -201,7 +236,6 @@ index 0000000..2d4bb99
 +            } else {
 +                
 +                setUserName(personEntity.Text)
-+                setProgressValue(70)
 +            }
 +            
 +            let dobEntity = _.find(filteredEntities,(entity) => entity.Type === 'DATE')
@@ -213,12 +247,10 @@ index 0000000..2d4bb99
 +                }) 
 +            } else {
 +                setDob(dobEntity.Text)
-+                setProgressValue(80)
 +            }
 +            
 +            
 +            setAlertMessage("Captured Document details")
-+            setProgressValue(90)
 +        }
 +
 +        return detectEntitiesResponse
@@ -235,9 +267,17 @@ index 0000000..2d4bb99
 +        const binaryImg = new Buffer(base64Image, 'base64');    
 +
 +        try {
-+            await captureFaceDetails(binaryImg)
++
++            await captureLabels(binaryImg)
++
++            setProgressValue(40)
 +
 +            await captureTextDetails(binaryImg)
++
++            setProgressValue(80)
++
++            await captureFaceDetails(binaryImg)
++
 +
 +            setProgressValue(100)    
 +            setShowSpinner(false)
@@ -304,7 +344,7 @@ index 0000000..2d4bb99
 </script>
 {{< /safehtml >}} {{< /expand >}}
 {{< safehtml >}}
-<textarea id="idf7530e6d5fa7c225620938a8303c2200d5861884videokycsrccomponentsAnalyzeDocsjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React,{ useState, useEffect } from "react";
+<textarea id="id38f2d585f05ca7e07b83d9cd8093d39ac8a76c9fvideokycsrccomponentsAnalyzeDocsjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React,{ useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import Button from 'react-bootstrap/Button'
 import Card from "react-bootstrap/Card"
@@ -327,7 +367,7 @@ const videoConstraints = {
 };
 
 const side_data = [
-    {"name":"front", "description":"Show the front of the Photo ID to the camera"},
+    {"name":"front", "description":"Show the photo page of your photo id (Aadhaar or Passport in India) to the camera"},
     {"name":"back", "description":"Show the back of the Photo ID to the camera"}
 ]  
 
@@ -344,6 +384,7 @@ const side_data = [
     const [dob, setDob] = useState("");
     const [userName, setUserName] = useState("");
     const [documentImage, setDocumentImage] = useState("");
+    const [documentType, setDocumentType] = useState("");
     
 
     useEffect(() => {
@@ -373,6 +414,7 @@ const side_data = [
 
     const proceedToNext = () => {
         setDocumentDetails({
+            documentType:documentType,
             name:userName,
             dateOfBirth:dob,
             gender:gender,
@@ -381,7 +423,42 @@ const side_data = [
       setTabStatus("AnalysisDetails");
     }
 
-  
+    const captureLabels = async (imageBuffer) => {
+        let rekognition = new AWS.Rekognition();
+        
+        logger.info("Calling rekognition face Detect")
+        let faceDetectParams = {
+            Image: {
+                Bytes:imageBuffer
+            }
+        };
+
+        let labelDetectResponse = await rekognition.detectLabels(faceDetectParams).promise();
+        if(labelDetectResponse.$response.error) {
+            setShowSpinner(false);
+            setAlertMessage(labelDetectResponse.$response.error.message)
+            return new Promise((resolve, reject) => {
+                throw new Error(labelDetectResponse.$response.error.message);
+            }) 
+        }
+        else {
+            logger.info('rekgn label', labelDetectResponse)
+            let PassportLabel = _.find(labelDetectResponse.Labels, (label) => {return (label.Name === 'Passport')})
+            let QRLabel = _.find(labelDetectResponse.Labels, (label) => {return (label.Name === 'QR Code')})
+        
+
+            if(QRLabel) {
+                setDocumentType('Aadhaar')
+            } else if (PassportLabel){
+                setDocumentType('Passport')
+            } else {
+                setDocumentType('Unknown Document Type')
+            }
+            setAlertMessage("Validated Document")
+        }
+
+        return labelDetectResponse
+    }
 
     const captureFaceDetails = async (imageBuffer) => {
         let rekognition = new AWS.Rekognition();
@@ -392,7 +469,7 @@ const side_data = [
             Image: {
                 Bytes:imageBuffer
             }
-        };
+        };        
         let faceDetectResponse = await rekognition.detectFaces(faceDetectParams).promise();
         if(faceDetectResponse.$response.error) {
             setShowSpinner(false);
@@ -413,7 +490,6 @@ const side_data = [
 
             setGender(faceDetectResponse.FaceDetails[0].Gender.Value)
             setAlertMessage("Captured image details")
-            setProgressValue(50)
 
             // get the bounding box
             let imageBounds = faceDetectResponse.FaceDetails[0].BoundingBox
@@ -485,7 +561,6 @@ const side_data = [
             } else {
                 
                 setUserName(personEntity.Text)
-                setProgressValue(70)
             }
             
             let dobEntity = _.find(filteredEntities,(entity) => entity.Type === 'DATE')
@@ -497,12 +572,10 @@ const side_data = [
                 }) 
             } else {
                 setDob(dobEntity.Text)
-                setProgressValue(80)
             }
             
             
             setAlertMessage("Captured Document details")
-            setProgressValue(90)
         }
 
         return detectEntitiesResponse
@@ -519,9 +592,17 @@ const side_data = [
         const binaryImg = new Buffer(base64Image, 'base64');    
 
         try {
-            await captureFaceDetails(binaryImg)
+
+            await captureLabels(binaryImg)
+
+            setProgressValue(40)
 
             await captureTextDetails(binaryImg)
+
+            setProgressValue(80)
+
+            await captureFaceDetails(binaryImg)
+
 
             setProgressValue(100)    
             setShowSpinner(false)
