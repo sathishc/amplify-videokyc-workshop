@@ -8,7 +8,7 @@ We have already enabled Predictions for face detection for Liveliness checks. Fo
 
 ## To enable compareFaces, we need to do the following
 
-1. Open the file 'amplify/backend/predictions/faceid-template.json"
+1. Open the file 'amplify/backend/predictions/faceId/faceid-template.json"
 
 2. Check the section 'PolicyDocument' and add "rekognition:CompareFaces" in the Actions section
 
