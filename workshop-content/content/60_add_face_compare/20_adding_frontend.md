@@ -6,22 +6,20 @@ weight = 20
 
 We will now create a front end for the Compare Faces feature . For this we add a new Summary component to our react app. We have already added all necessary libraries for the previous components. We just need to add code to enable this feature.
 
-1. **➡️ Create a new component `src/components/Summary.js` with** <span class="clipBtn clipboard" data-clipboard-target="#ide8514237da80d55cbb7b624cf44691b908df016fvideokycsrccomponentsSummaryjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
+1. **➡️ Create a new component `src/components/Summary.js` with** <span class="clipBtn clipboard" data-clipboard-target="#idfe909b7398cf77e25f41cdce8468b1b85703880fvideokycsrccomponentsSummaryjs"><strong>this content</strong></span> (click the gray button to copy to clipboard). 
 {{< expand "Click to view diff" >}} {{< safehtml >}}
-<div id="diff-ide8514237da80d55cbb7b624cf44691b908df016fvideokycsrccomponentsSummaryjs"></div> <script type="text/template" data-diff-for="diff-ide8514237da80d55cbb7b624cf44691b908df016fvideokycsrccomponentsSummaryjs">commit e8514237da80d55cbb7b624cf44691b908df016f
+<div id="diff-idfe909b7398cf77e25f41cdce8468b1b85703880fvideokycsrccomponentsSummaryjs"></div> <script type="text/template" data-diff-for="diff-idfe909b7398cf77e25f41cdce8468b1b85703880fvideokycsrccomponentsSummaryjs">commit fe909b7398cf77e25f41cdce8468b1b85703880f
 Author: Sathish <sat.hariharan@gmail.com>
-Date:   Mon Aug 10 22:47:34 2020 +0530
+Date:   Thu Aug 13 16:27:03 2020 +0530
 
-    add Summary
+    updated summary
 
 diff --git a/video-kyc/src/components/Summary.js b/video-kyc/src/components/Summary.js
-new file mode 100644
-index 0000000..2dee403
---- /dev/null
+index e69de29..31603d1 100644
+--- a/video-kyc/src/components/Summary.js
 +++ b/video-kyc/src/components/Summary.js
-@@ -0,0 +1,177 @@
+@@ -0,0 +1,187 @@
 +import React,{ useState, useEffect } from "react";
-+import Accordion from 'react-bootstrap/Accordion'
 +import Card from 'react-bootstrap/Card'
 +import Button from 'react-bootstrap/Button'
 +import Container from 'react-bootstrap/Container'
@@ -83,6 +81,12 @@ index 0000000..2dee403
 +            setAlertMessage(compareFacesResponse.$response.error.message)
 +        } else {
 +            logger.info('compare results', compareFacesResponse)
++
++            if(compareFacesResponse.FaceMatches.length === 0){
++                setAlertMessage(" Did not pass Face similarity test. Try again !") 
++                setFaceSimilarity(0)
++            }
++
 +            setFaceSimilarity(compareFacesResponse.FaceMatches[0].Similarity)
 +            if(compareFacesResponse.FaceMatches[0].Similarity > 80){
 +                setAlertMessage(" You have successfully completed the KYC")
@@ -102,7 +106,7 @@ index 0000000..2dee403
 +            <tbody>
 +                <tr>
 +                    <td>
-+                <Card>
++                <Card border="light">
 +                    <Card.Header>
 +                        Liveness Test Data 
 +                    </Card.Header>
@@ -119,7 +123,7 @@ index 0000000..2dee403
 +                                    <tr>
 +                                    <td>Live Image</td>
 +                                    <td>
-+                                        <img src={`${liveTestDetails['liveImage']}`} />
++                                        <img alt="Live snapshot" src={`${liveTestDetails['liveImage']}`} />
 +                                    </td>
 +                                    </tr>
 +                                   
@@ -133,7 +137,7 @@ index 0000000..2dee403
 +                </Card>
 +                </td>
 +                <td>
-+                <Card>
++                <Card border="light">
 +                    <Card.Header>
 +                       Data Extracted from ID documents.
 +                    </Card.Header>
@@ -142,6 +146,11 @@ index 0000000..2dee403
 +                            <Row>
 +                            <Table responsive>
 +                                <tbody>
++                                <tr>
++                                    <td>Name</td>
++                                    <td>{documentDetails["documentType"]}</td>
++                                    </tr>
++
 +                                    <tr>
 +                                    <td>Name</td>
 +                                    <td>{documentDetails["name"]}</td>
@@ -160,7 +169,7 @@ index 0000000..2dee403
 +                                    <tr>
 +                                    <td>Image</td>
 +                                    <td>
-+                                        <img src={`${documentDetails['userImage']}`} />
++                                        <img  alt="User from Document" src={`${documentDetails['userImage']}`} />
 +                                    </td>
 +                                    </tr>
 +                                   
@@ -174,7 +183,7 @@ index 0000000..2dee403
 +                </td>
 +                </tr>
 +                <tr>
-+                    <td colspan="2">
++                    <td colSpan="2">
 +                    <Card>
 +                        <Card.Header>
 +                        Compare Faces to complete KYC
@@ -201,8 +210,7 @@ index 0000000..2dee403
 </script>
 {{< /safehtml >}} {{< /expand >}}
 {{< safehtml >}}
-<textarea id="ide8514237da80d55cbb7b624cf44691b908df016fvideokycsrccomponentsSummaryjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React,{ useState, useEffect } from "react";
-import Accordion from 'react-bootstrap/Accordion'
+<textarea id="idfe909b7398cf77e25f41cdce8468b1b85703880fvideokycsrccomponentsSummaryjs" style="position: relative; left: -1000px; width: 1px; height: 1px;">import React,{ useState, useEffect } from "react";
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
@@ -264,6 +272,12 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
             setAlertMessage(compareFacesResponse.$response.error.message)
         } else {
             logger.info('compare results', compareFacesResponse)
+
+            if(compareFacesResponse.FaceMatches.length === 0){
+                setAlertMessage(" Did not pass Face similarity test. Try again !") 
+                setFaceSimilarity(0)
+            }
+
             setFaceSimilarity(compareFacesResponse.FaceMatches[0].Similarity)
             if(compareFacesResponse.FaceMatches[0].Similarity > 80){
                 setAlertMessage(" You have successfully completed the KYC")
@@ -283,7 +297,7 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
             <tbody>
                 <tr>
                     <td>
-                <Card>
+                <Card border="light">
                     <Card.Header>
                         Liveness Test Data 
                     </Card.Header>
@@ -300,7 +314,7 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
                                     <tr>
                                     <td>Live Image</td>
                                     <td>
-                                        <img src={`${liveTestDetails['liveImage']}`} />
+                                        <img alt="Live snapshot" src={`${liveTestDetails['liveImage']}`} />
                                     </td>
                                     </tr>
                                    
@@ -314,7 +328,7 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
                 </Card>
                 </td>
                 <td>
-                <Card>
+                <Card border="light">
                     <Card.Header>
                        Data Extracted from ID documents.
                     </Card.Header>
@@ -323,6 +337,11 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
                             <Row>
                             <Table responsive>
                                 <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>{documentDetails["documentType"]}</td>
+                                    </tr>
+
                                     <tr>
                                     <td>Name</td>
                                     <td>{documentDetails["name"]}</td>
@@ -341,7 +360,7 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
                                     <tr>
                                     <td>Image</td>
                                     <td>
-                                        <img src={`${documentDetails['userImage']}`} />
+                                        <img  alt="User from Document" src={`${documentDetails['userImage']}`} />
                                     </td>
                                     </tr>
                                    
@@ -355,7 +374,7 @@ export default ({setTabStatus,documentDetails, liveTestDetails}) => {
                 </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td colSpan="2">
                     <Card>
                         <Card.Header>
                         Compare Faces to complete KYC
