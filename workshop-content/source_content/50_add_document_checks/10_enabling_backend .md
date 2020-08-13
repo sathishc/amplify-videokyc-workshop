@@ -39,4 +39,14 @@ We have already enabled Predictions for face detection for Liveliness checks. We
 
 7. **➡️ Now run** `amplify push'` to update the backend to enable Comprehend usage
 
+In addition to the above, we will also use the detect Labels feature in Rekognition to understand if the document being shown is an Id Card. Also the type of id card (Passport / etc). We check for symbols like QR codes to recognize specific documents. To do this we need to provide access to this API.
 
+## To enable detectLabels, we need to do the following
+
+1. Open the file 'amplify/backend/predictions/faceId/faceid-template.json"
+
+2. Check the section 'PolicyDocument' and add "rekognition:DetectLabels" in the Actions section
+
+3. **➡️ Now run** `amplify push'` to update the backend to enable CompareFaces usage
+
+This should enable access to the relevant APIs 
