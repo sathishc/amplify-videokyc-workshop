@@ -1,10 +1,10 @@
 ---
-title: "Amplify Video KYC Workshop"
+title: "Amplify + AI Services KYC App Workshop"
 chapter: true
 weight: 1
 ---
 
-## Build a Self-service Video KYC App <br/> with AWS Amplify and AWS AI Services
+## Build a self-service Video KYC App <br/> with AWS Amplify and Amazon AI Services
 
 ### Welcome!
 
