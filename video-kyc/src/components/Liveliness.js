@@ -69,8 +69,8 @@ const videoConstraints = {
         // update next gesture
         if( gesture === "smile") {
             setProgressValue(30)
-            setGesture("eyesClose")
-        } else if (gesture === "eyesClose") {
+            setGesture("lookRight")
+        } else if (gesture === "lookRight") {
             setProgressValue(70)
             setGesture("mouthOpen")
         } else {
@@ -100,11 +100,11 @@ const videoConstraints = {
                 return {result:false, message:"Failed to validate smile. Try again "}
             }
             
-        } else if(gesture === "eyesClose") {
-            if(data.FaceDetails[0].EyesOpen.Value === false){
+        } else if(gesture === "lookRight") {
+            if(data.FaceDetails[0].Pose.Yaw <= -30){
                 return {result:true, message:"Thank you"}
             } else {
-                return {result:false, message:"Failed to validate closed eyes. Try again "}
+                return {result:false, message:"Failed to validate face turning right. Try again "}
             }
         } else if(gesture === "mouthOpen") {
             if(data.FaceDetails[0].MouthOpen.Value === true){

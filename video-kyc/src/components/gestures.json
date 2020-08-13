@@ -4,8 +4,8 @@
         "description":"Please smile !!!"
     },
     {
-        "name":"eyesClose",
-        "description":"Please close your eyes"
+        "name":"lookRight",
+        "description":"Please turn your face to your right"
     },
     {
         "name":"mouthOpen",
