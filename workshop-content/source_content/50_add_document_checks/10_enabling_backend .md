@@ -16,9 +16,11 @@ We have already enabled Predictions for face detection for Liveliness checks. We
 
 4. For "Provide a friendly name for your resource". Provide a name "textID". Use "Default Configuration"
 
-5. For "Who should have access?" Select - Auth users only
+5. For "Would you like to identify Documents?" - select 'Y'
 
-6. **➡️ Now run** `amplify push'` to update the backend to enable Rekognition usage
+6. For "Who should have access?" Select - Auth users only
+
+7. **➡️ Now run** `amplify push'` to update the backend to enable Rekognition usage
 
 
 ## To enable entity detection in text, we need to do the following to enable comprehend access
