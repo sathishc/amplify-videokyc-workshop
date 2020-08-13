@@ -10,7 +10,7 @@ We will now create a front end for the liveness feature to capture the portrait 
 
 2. **➡️ Run** `npm install --save 'lodash'` as we use this library for data structures
 
-3. **➡️ Run** `npm install --save 'Jimp'` as we use this library for image cropping
+3. **➡️ Run** `npm install --save 'jimp'` as we use this library for image cropping
 
 4. **➡️ Run** `npm install --save 'aws-sdk'` as we use direct calls into the SDK for using features in Rekognition and later with Comprehend
 
