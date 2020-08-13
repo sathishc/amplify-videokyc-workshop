@@ -35,11 +35,11 @@ A best practice is to deploy your infrastructure close to your customers, let's 
 **Create an AWS config file**, run:
 
 {{% tabs %}}
-{{% tab "us-east-1" "Virginia" %}}
+{{% tab "ap-south-1" "Mumbai" %}}
 ```bash
 cat <<END > ~/.aws/config
 [default]
-region=us-east-1
+region=ap-south-1
 END
 ```
 {{% /tab %}}
@@ -51,15 +51,7 @@ cat <<END > ~/.aws/config
 region=us-west-2
 END
 ```
-{{% /tab %}}
 
-{{% tab "eu-west-1" "Ireland" %}}
-```bash
-cat <<END > ~/.aws/config
-[default]
-region=eu-west-1
-END
-```
 {{% /tab %}}
 
 {{% tab  "ap-southeast-1"  "Singapore" %}}

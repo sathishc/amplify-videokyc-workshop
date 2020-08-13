@@ -19,7 +19,7 @@ the cloud9 domain, otherwise connecting to the workspace might be impacted.
 
 ### Create a new environment
 
-1. Go to the [Cloud9 web console](https://us-west-2.console.aws.amazon.com/cloud9/home?region=us-west-2).
+1. Go to the [Cloud9 web console](https://ap-south-1.console.aws.amazon.com/cloud9/home?region=ap-south-1).
 1. At the top right corner of the console, make sure you're using one of these regions: Mumbai (ap-south-1), Singapore (ap-southeast-1), or Oregon (us-west-2)
 1. Select **Create environment**
 1. Name it **workshop**, and go to the **Next step**
