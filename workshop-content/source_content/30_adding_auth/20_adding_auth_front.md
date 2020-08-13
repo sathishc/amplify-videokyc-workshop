@@ -34,7 +34,6 @@ You'll be taken to a screen asking you to confirm a code. This is because Amazon
 
 **➡️ Check your email**. You should have received a confirmation code message. **Copy and paste the confirmation code** into your app and you should then be able to log in with the username and password you entered during sign up. 
 
-Once you sign in, the form disappears and you can see our App component rendered below a header bar that contains your username and a 'Sign Out' button.
 
 {{% notice tip %}}
 This is a pretty simple authentication UI, but there's a lot you can do to customize it, including replacing parts with your own React components or using a completely hosted UI that can redirect back to your app. See the Customization section of the [AWS Amplify Authentication Guide](https://aws.github.io/aws-amplify/media/authentication_guide#customization) for more information.
