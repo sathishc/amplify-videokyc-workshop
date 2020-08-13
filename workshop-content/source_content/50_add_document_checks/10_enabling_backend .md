@@ -16,7 +16,7 @@ We have already enabled Predictions for face detection for Liveliness checks. We
 
 4. For "Provide a friendly name for your resource". Provide a name "textID". Use "Default Configuration"
 
-5. For "Would you like to identify Documents?" - select 'Y'
+5. For "Would you like to identify documents?" - select 'Yes'
 
 6. For "Who should have access?" Select - Auth users only
 
